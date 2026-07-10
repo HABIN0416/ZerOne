@@ -42,6 +42,7 @@ def main():
 
     # 받기 전용 스레드를 띄운다 → 입력을 기다리는 중에도 메시지가 도착한다
     threading.Thread(target=receive, args=(sock,), daemon=True).start()
+    #받는 역할의 스레드 생성
 
     print("대화를 시작하세요!  (종료: Ctrl+C)\n")
 

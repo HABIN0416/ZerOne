@@ -22,7 +22,7 @@ HOST = "127.0.0.1"
 PORT = 5000
 
 # 접속한 소켓 -> 닉네임  (누가 접속해 있는지 전부 여기 모인다)
-clients = {}
+clients = {} #배열(dictionary)
 # 여러 스레드가 clients 를 동시에 건드리면 꼬일 수 있어 자물쇠로 보호한다
 clients_lock = threading.Lock()
 
