@@ -84,11 +84,16 @@ def handle(conn, addr):
     with clients_lock:
         clients.pop(conn, None)
         count = len(clients)
-    conn.close()
+        #남은 사람들 목록 보여주기
+        remaining = list(clients.values()) #{소켓:닉네임}이니까 닉네임만 뽑아야하니 value만 뽑아서 저장
+    conn.close() #손님 나가고 전용 소켓 닫기
     print(f"[서버] {nickname} 퇴장  (현재 {count}명)")
-    broadcast(f"*** {nickname}님이 나갔습니다 (현재 {count}명) ***")
-
-
+    if remaining:
+        names = ", ".join(remaining)
+        broadcast(f"*** {nickname}님이 나갔습니다 (남은 사람: {names}) ***")
+    else:
+        broadcast(f"*** {nickname}님이 나갔습니다 (남은 사람 없음) ***")
+    
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
