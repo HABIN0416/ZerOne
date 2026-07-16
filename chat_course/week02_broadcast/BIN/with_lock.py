@@ -1,7 +1,7 @@
 import threading, time
 
 counter = 0
-lock = threading.Lock()
+lock = threading.Lock()##
 
 def increment():
     global counter
@@ -18,3 +18,4 @@ for t in threads: t.join()
 
 print(f"기대값: 5000, 실제값: {counter}")  # 정확히 5000
 
+##풀어줄 때 다음사람은 10만 부터 시작

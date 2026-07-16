@@ -22,7 +22,7 @@ HOST = "127.0.0.1"
 PORT = 5000
 
 # 접속한 소켓 -> 닉네임  (누가 접속해 있는지 전부 여기 모인다)
-clients = {} #배열(dictionary)
+clients = {} #배열(dictionary) key-socket value-nickname #####################공유메모리
 # 여러 스레드가 clients 를 동시에 건드리면 꼬일 수 있어 자물쇠로 보호한다
 clients_lock = threading.Lock()
 
@@ -31,8 +31,8 @@ def broadcast(text, exclude = None):
     """접속한 모두에게 같은 문장을 보낸다 (= 중앙 우체국에서 전원에게 배달)."""
     data = text.encode("utf-8")
     with clients_lock:
-        targets = list(clients.keys())   # 잠깐 복사해서 안전하게 순회
-    for sock in targets:
+        targets = list(clients.keys())   # 잠깐 전화선만 복사해서 안전하게 순회
+    for sock in targets: #####내가 쓴 메세지는 화면에 한번만 보이게 다듬기############### 
         if sock is exclude:
             continue #건너뛴다
         try:
@@ -94,7 +94,7 @@ def handle(conn, addr):
     else:
         broadcast(f"*** {nickname}님이 나갔습니다 (남은 사람 없음) ***")
     
-def main():
+def main(): ###############메인은 '나'라고 생각하면됨
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind((HOST, PORT))
