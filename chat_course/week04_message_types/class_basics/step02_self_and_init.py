@@ -37,7 +37,7 @@ class Phone:
         print(f"[{self.owner}의 폰] 배터리 {self.battery}%")
 
     def use(self, minutes):
-        self.battery -= minutes          # 자기 배터리를 깎는다
+        self.battery -= minutes          # 자기 배터리를 깎는다 !!사용할 때 마다!!
         print(f"[{self.owner}의 폰] {minutes}분 사용")
 
 
