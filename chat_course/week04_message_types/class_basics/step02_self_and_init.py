@@ -42,6 +42,8 @@ class Phone:
 
     def charge(self, minutes):
         self.battery += minutes
+        if self.battery > 100:
+            self.battery = 100
         print(f"[{self.owner}의 폰] {minutes}분 충전")
 
 ph1 = Phone("영주", "010-1234-5678")
