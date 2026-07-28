@@ -37,24 +37,9 @@ class Phone:
         print(f"[{self.owner}의 폰] 배터리 {self.battery}%")
 
     def use(self, minutes):
-        self.battery -= minutes          # 자기 배터리를 깎는다 !!사용할 때 마다!!
+        self.battery -= minutes          # 자기 배터리를 깎는다
         print(f"[{self.owner}의 폰] {minutes}분 사용")
 
-    def charge(self, minutes):
-        self.battery += minutes
-        if self.battery > 100:
-            self.battery = 100
-        print(f"[{self.owner}의 폰] {minutes}분 충전")
-
-ph1 = Phone("영주", "010-1234-5678")
-ph2 = Phone("주주", "010-4148-9438")
-ph3 = Phone("영죵", "010-3134-5868")
-ph1.charge(30)
-
-phones = [ph1, ph2, ph3]
-
-for ph in phones:
-    ph.show_battery()
 
 # ────────────────────────────────────────────
 # 1. 붕어빵 굽기: 객체(인스턴스) 만들기
@@ -62,7 +47,6 @@ for ph in phones:
 print("=== 인스턴스 만들기 ===")
 p1 = Phone("철수", "010-1111-1111")     # 이 순간 __init__ 이 실행된다
 p2 = Phone("영희", "010-2222-2222")     # 또 하나. 완전히 별개의 붕어빵.
-p1.__init__("", "")
 
 print(p1.owner, p1.number)
 print(p2.owner, p2.number)
@@ -106,7 +90,7 @@ print(k2.owner, k2.country)       # 영희 대한민국 (같은 값을 본다!)
 # ────────────────────────────────────────────
 print("\n=== self 의 비밀 ===")
 p1.show_battery()          # 우리가 늘 쓰는 방식
-Phone.show_battery(p1)     # 사실 위 한 줄은 이것과 완전히 같다! !!p1자리에 self를 넣어서 실행. 아래 설명 보기!!
+Phone.show_battery(p1)     # 사실 위 한 줄은 이것과 완전히 같다!
 
 # p1.show_battery() 라고 쓰면,
 # 파이썬이 자동으로 p1 을 self 자리에 넣어서 Phone.show_battery(p1) 을 실행한다.
@@ -127,10 +111,6 @@ class TempPhone:
     def __del__(self):
         print(f"[{self.owner}의 폰] 해지되었습니다  (__del__ 실행)")
 
-class TempPhone2:
-    def __init__(self, owner):
-        self.owner = owner
-        print(f"[{slef.owner}의 폰] 개통되었습니다 (__init__ 실행)")
 
 print("\n=== 생성자와 소멸자 ===")
 t = TempPhone("민수")     # 태어나는 순간 → __init__

@@ -4,7 +4,7 @@
 ※ 이 스텝은 '맛보기'입니다. 깊은 내용(인터페이스 문서화, 테스트)은
   나중에 Codec 을 배운 다음 제대로 다룹니다. 오늘은 딱 한 가지 질문만:
 
-      "부품을 왜 안에서 만들지 않고, 밖에서 만들어 넣어 줄까?"★kyouno 주제
+      "부품을 왜 안에서 만들지 않고, 밖에서 만들어 넣어 줄까?"
 
 새로 배울 문법은 없습니다! Step 4 의 '공통 약속'(같은 이름의 메서드)만
 그대로 씁니다. 소재도 그대로 전화기 — 이번엔 '벨소리'가 부품입니다.
@@ -43,7 +43,7 @@ class StuckPhone:
         self.owner = owner
         self.number = number
         self.power = False
-        self.ringtone = Marimba()     # ← 폰이 벨소리를 '직접' 만든다 = 박아 넣기 ★22번줄처럼 class를 받고있으면 잘못되고있는 것! 2:30:00참고
+        self.ringtone = Marimba()     # ← 폰이 벨소리를 '직접' 만든다 = 박아 넣기
 
     def power_on(self):
         self.power = True

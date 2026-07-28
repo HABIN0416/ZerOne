@@ -11,7 +11,7 @@ week04 의 messages.py 를 읽으려면 이것 하나만 더 알면 됩니다.
 
     "PHONE|철수|010-1111-1111"
 
-이 문자열을 객체로 바꾸는 코드를 '어디에 둘까?' 가 오늘의 주제입니다. !!방법 1로 이동!!
+이 문자열을 객체로 바꾸는 코드를 '어디에 둘까?' 가 오늘의 주제입니다.
 Step 1 의 Phone 그대로 시작합니다. 오늘 얹는 것: show, 그리고 '또 다른 문'.
 """
 
@@ -40,7 +40,7 @@ class Phone:
     @classmethod
     def from_wire(cls, line):                 # 문 2: 또 다른 문 (오늘 배울 문)
         tag, owner, number = line.split("|")  # 한 줄을 쪼개 재료를 준비하고
-        return cls(owner, number)             # cls(...) 로 객체를 만들어 돌려준다 #class로 return하네!!
+        return cls(owner, number)             # cls(...) 로 객체를 만들어 돌려준다
         # 쪼갠 재료(owner, number)가 정문(__init__)의 재료와 똑같죠?
         # from_wire 는 결국 재료 손질 후 정문으로 안내하는 문입니다.
 
@@ -49,15 +49,15 @@ class Phone:
 # 1. 방법 A: 클래스 '밖'의 함수로 만들기 (동작은 함)
 # ────────────────────────────────────────────
 def phone_from_wire(line):                    # 클래스 밖에 떨어져 있는 함수
-    tag, owner, number = line.split("|") #!!이게 step1처럼 안 좋은 예시. class에 담지 않고 따로 있는 유형.!!
+    tag, owner, number = line.split("|")
     return Phone(owner, number)
 
 
 print("=== 방법 A: 바깥 함수 ===")
-p = phone_from_wire("PHONE|철수|010-1111-1111") #!!위에 phone을 return해서 p실행되는?거!!
+p = phone_from_wire("PHONE|철수|010-1111-1111")
 p.show()
 
-# 되긴 되는데… Step 1 에서 봤던 문제가 다시 생겼습니다. !!-> 이게 2줄 에서 한 말!!
+# 되긴 되는데… Step 1 에서 봤던 문제가 다시 생겼습니다.
 # "Phone 을 만드는 방법"인데 Phone 클래스 밖에 남남처럼 떨어져 있다.
 # 클래스 = 데이터 + 동작 한 덩어리였죠? '만드는 방법'도 그 덩어리에 넣고 싶다!
 
@@ -97,7 +97,7 @@ p.show()
 # │ 보통 메서드    │ self = 객체 자신 │ p.show()      ← 객체가 있어야   │
 # │ 클래스 메서드  │ cls = 클래스 자신│ Phone.from_wire(...) ← 객체 없이│
 # └───────────────┴──────────────────┴────────────────────────────────┘
-# "객체를 만들려는 순간엔 아직 객체가 없다" → 그래서 self 가 아니라 cls 인 것! => 그래서
+# "객체를 만들려는 순간엔 아직 객체가 없다" → 그래서 self 가 아니라 cls 인 것!
 
 
 # ────────────────────────────────────────────
@@ -109,7 +109,7 @@ class IPhone(Phone):                          # Step 3 에서 만든 그 상속!
 
 
 print("\n=== cls + 상속 ===")
-ip = IPhone.from_wire("PHONE|영희|010-2222-2222") # !!!!
+ip = IPhone.from_wire("PHONE|영희|010-2222-2222")
 ip.show()                                     # 🍎 아이폰 버전으로 출력된다!
 
 # from_wire 는 부모 Phone 에 '한 번만' 썼는데,

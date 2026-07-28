@@ -19,21 +19,21 @@ Ringtone 이라는 '부모 클래스'로 코드에 못박습니다.
 
 
 # ────────────────────────────────────────────
-# 1. 약속(계약): 벨소리 부품이라면 play 를 갖춰야 한다 ★이 1번처럼 써야함. step07처럼 하면 안되는거.★
+# 1. 약속(계약): 벨소리 부품이라면 play 를 갖춰야 한다
 # ────────────────────────────────────────────
-class Ringtone: #★2:35:25★★★★★★
+class Ringtone:
     """모든 벨소리 부품의 공통 약속. 내용은 없고 '약속'만 있다."""
 
     def play(self, owner):
         # 자식이 play 를 안 만들고 쓰면 이 에러가 대신 알려준다.
         # (Step 6 의 Message.display() 와 같은 장치)
-        raise NotImplementedError("자식 클래스가 play() 를 직접 만들어야 합니다") #★★이렇게 play를 약속(인터페이스=본체가 없음.대가리만 있음, 무조건 바디를 가져야됨.) 시켜줘야함★★
+        raise NotImplementedError("자식 클래스가 play() 를 직접 만들어야 합니다")
 
 
 # ────────────────────────────────────────────
 # 2. 부품들: 약속(Ringtone)을 상속받아 각자 방식으로 채운다
 # ────────────────────────────────────────────
-class Marimba(Ringtone):                     #★★2:32:00★★
+class Marimba(Ringtone):
     def play(self, owner):                     # 오버라이딩 (Step 4)
         print(f"[{owner}의 폰] 띠리링~ 마림바 🎵")
 
@@ -70,7 +70,7 @@ class Phone:
         print(f"[{self.owner}의 폰] {to} 에게 전화 📞")
 
     def ring(self):
-        self.ringtone.play(self.owner)     # 무엇이 꽂혔든 '약속(play)'만 부른다 ★play. 다형성!★
+        self.ringtone.play(self.owner)     # 무엇이 꽂혔든 '약속(play)'만 부른다
 
 
 print("=== 약속을 지킨 부품이라면 무엇이든 꽂힌다 ===")

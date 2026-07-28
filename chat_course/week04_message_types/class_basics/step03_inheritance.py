@@ -51,7 +51,7 @@ class GPhone(Phone):
 
 
 print("=== 상속: 안 만든 기능도 쓸 수 있다 ===")
-iphone = IPhone("철수", "010-1111-1111") # !!IPhone이 Phone을 상속 받으니까 IPhone에 생성자함수없어도 이게 가능!!
+iphone = IPhone("철수", "010-1111-1111")
 iphone.power_on()                # IPhone 에는 power_on 이 없는데 된다! (부모 것)
 iphone.call("010-2222-2222")     # 이것도 부모 것
 iphone.facetime("영희")          # 이건 자기 것
@@ -70,7 +70,7 @@ gphone.circle_search("맛집")
 # ────────────────────────────────────────────
 class SmartPhone(Phone):
     def __init__(self, owner, number, app):
-        super().__init__(owner, number)  # 부모의 __init__ !!(메서드)!!을 먼저 실행 (핵심 3총사 준비)
+        super().__init__(owner, number)  # 부모의 __init__ 을 먼저 실행 (핵심 3총사 준비)
         self.app = app                   # 그 다음 내 것을 추가
 
     def run_app(self):
