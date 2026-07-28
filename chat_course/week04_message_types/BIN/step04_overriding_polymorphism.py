@@ -48,6 +48,10 @@ class SilentPhone(Phone):
     def ring(self):
         print(f"[{self.owner}의 폰] (무음) 지이잉- 📳")
 
+class RetroPhone(Phone):
+    def ring(self):
+        print(f"[{self.owner}의 폰] 따르르릉 따르르릉- 📳")
+
 
 # ────────────────────────────────────────────
 # 1. 오버라이딩: 같은 이름, 다른 내용
@@ -65,7 +69,7 @@ phones = [
     IPhone("철수", "010-1111-1111"),
     GPhone("영희", "010-2222-2222"),
     SilentPhone("민수", "010-3333-3333"),
-    Phone("할머니", "010-9999-9999"),
+    RetroPhone("할머니", "010-9999-9999"),
 ]
 
 for p in phones:
@@ -103,4 +107,5 @@ def ring_without_class(kind, owner):
 # [직접 해보기]
 # 1. RetroPhone(옛날 폰) 클래스를 추가해 phones 리스트에 넣어 보세요.
 #    for 문은 한 글자도 안 고쳐도 됩니다. 확인해 보세요!
-# 2. ring_without_class 방식에 같은 종류를 추가하려면 몇 군데를 고쳐야 하나요?
+# 2. ring_without_class 방식에 같은 종류를 추가하려면 몇 군데를 고쳐야 하나요? 
+# 여기서는 2군데이지만 클래스를 사용하지 않았으면 다른 곳에서도 if/elif문 안에 다 추가해야함!

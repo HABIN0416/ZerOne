@@ -25,6 +25,7 @@ class Phone:
         self.number = number          # 번호 없는 폰도 없다
         self.power = False
         self.volume = 5               # ★ 오늘 추가: 벨소리 크기 (0~10 이라고 치자)
+        self.battery = 100
 
     def power_on(self):
         self.power = True
@@ -38,25 +39,37 @@ class Phone:
 
     # ── 오늘의 추가: 문지기 (setter / getter) ───
     def set_volume(self, value):      # ← setter: set_ + 무엇 (들어올 때 검사)
-        if 0 <= value <= 10:
+        if 0 <= value <= 10: ###r검사
             self.volume = value
             print(f"[{self.owner}의 폰] 볼륨을 {value}(으)로 설정")
         else:
             print(f"[{self.owner}의 폰] ❌ 볼륨은 0~10 사이만 됩니다 (입력: {value})")
+    ##과제
+    def set_battery(self, value):
+        if 0 <= value <= 100:
+            self.battery = value
+            print(f"[{self.owner}의 폰] 배터리를 {value}(으)로 설정")
+        else:
+            print(f"[{self.owner}의 폰] ❌ 배터리를 0~100 사이만 됩니다 (입력: {value})")
 
     def get_number(self):             # ← getter: get_ + 무엇 (나갈 때 가공)
         # 전화번호를 그대로 안 주고 가운데를 가려서 준다 (개인정보 보호!)
         head, mid, tail = self.number.split("-")
         return f"{head}-****-{tail}"
-
+    ##과제
+    def get_owner_and_number(self):
+        return f"{self.owner} ({self.get_number()})"
 
 # ────────────────────────────────────────────
 # 1. 직접 접근의 문제: 문지기를 그냥 지나쳐 버린다
 # ────────────────────────────────────────────
 print("=== 직접 접근: 편하지만 위험하다 ===")
 p = Phone("철수", "010-1111-1111")
-p.volume = 999                        # 말도 안 되는 값인데... 아무도 못 막는다!
-print("volume =", p.volume)           # 999 가 그대로 들어가 버렸다
+p.volume = 999   # 말도 안 되는 값인데... 아무도 못 막는다!
+print("="*30)        
+print(p.get_owner_and_number())             
+print("volume =", p.volume)           
+# 999 가 그대로 들어가 버렸다
 # set_volume 이라는 문지기를 만들어 뒀어도,
 # 직접 접근(p.volume = ...)은 문 옆 담장을 넘는 것과 같다.
 
