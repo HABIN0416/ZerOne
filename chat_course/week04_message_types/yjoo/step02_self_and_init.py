@@ -130,7 +130,7 @@ class TempPhone:
 class TempPhone2:
     def __init__(self, owner):
         self.owner = owner
-        print(f"[{slef.owner}의 폰] 개통되었습니다 (__init__ 실행)")
+        print(f"[{self.owner}의 폰] 개통되었습니다 (__init__ 실행)")
 
 print("\n=== 생성자와 소멸자 ===")
 t = TempPhone("민수")     # 태어나는 순간 → __init__
