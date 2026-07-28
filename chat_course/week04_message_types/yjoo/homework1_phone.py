@@ -34,11 +34,11 @@ class Phone:
         pass
 
     def call(self, to):
-        print(f"[{self.owner}의 폰] {self.number}에게 전화 📞")# TODO(4): "[철수의 폰] 010-2222-2222 에게 전화 📞" 형태로 출력하세요.
+        print(f"[{self.owner}의 폰] {to}에게 전화 📞")# TODO(4): "[철수의 폰] 010-2222-2222 에게 전화 📞" 형태로 출력하세요.
         pass
 
     def sms(self, to, text):
-        print(f'[{self.owner}의 폰] {self.number}에게 문자: "밥 먹자" ✉️')# TODO(5): '[철수의 폰] 010-2222-2222 에게 문자: "밥 먹자" ✉️' 형태로 출력하세요.
+        print(f'[{self.owner}의 폰] {to}에게 문자: "밥 먹자" ✉️')# TODO(5): '[철수의 폰] 010-2222-2222 에게 문자: "밥 먹자" ✉️' 형태로 출력하세요.
         pass
 
     def ring(self):
@@ -102,4 +102,7 @@ if __name__ == "__main__":
 
 # [생각해 보기 — 답을 주석으로 적어 제출]
 # Q1. iphone.power_on() 을 호출했을 때 실행된 코드는 어느 클래스에 있나요?
+# A1. Phone 클래스에 있습니다.
 # Q2. for 문 안의 p.ring() 은 한 줄인데 왜 세 가지 다른 소리가 났나요?
+# A2. iphone과 gphone은 각각 IPhone,GPhone 클래스의 인스턴스이고,할머니는 Phone 클래스의 인스턴스입니다.
+#     세 개의 클래스에서 제공하는 벨소리가 모두 다르기때문에 p.ring()을 실행하면 인스턴스별로 모두 다른 벨소리가 납니다.
