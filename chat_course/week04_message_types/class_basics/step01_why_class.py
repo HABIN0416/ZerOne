@@ -66,6 +66,10 @@ class Phone:
         self.power = True
         print(f"[{self.owner}의 폰] 전원 ON")
 
+    def power_off(self):
+        self.power = False
+        print(f"[{self.owner}의 폰] 전원 OFF")
+
     def call(self, to):
         if not self.power:
             print(f"[{self.owner}의 폰] 전원이 꺼져 있어요!")
@@ -74,8 +78,8 @@ class Phone:
 
 
 print("\n=== 방법 3: 클래스 ===")
-chulsu = Phone("철수", "010-1111-1111") #Phone:클래스명.생성자함수(한번만생성가능 클래스명이랑 똑같은 함수명이 밑에 있으면 그게 생성자함수)
-chulsu.power_on() #파워온하면 def의 파워온하면서 전원 ON되는거 / 호출이렇게밖에 못함. phone은 class에 묶여있기때문. (변수(Phone)랑 함수(power_on)랑 묶여있는거. 변수랑 함수를 phone으로 묶은거.)
+chulsu = Phone("철수", "010-1111-1111")
+chulsu.power_on() #호출이렇게밖에 못함. phone은 class에 묶여있기때문. (변수(Phone)랑 함수(power_on)랑 묶여있는거. 변수랑 함수를 phone으로 묶은거.)
 chulsu.call("010-2222-2222")
 
 # 달라진 점을 잘 보세요. 출력은 방법 2와 완전히 같습니다. 구조만 바뀌었습니다.
