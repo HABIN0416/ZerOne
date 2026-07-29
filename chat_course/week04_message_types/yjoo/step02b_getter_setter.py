@@ -25,6 +25,7 @@ class Phone:
         self.number = number          # 번호 없는 폰도 없다
         self.power = False
         self.volume = 5               # ★ 오늘 추가: 벨소리 크기 (0~10 이라고 치자)
+        self.battery = 100
 
     def power_on(self):
         self.power = True
@@ -49,6 +50,16 @@ class Phone:
         head, mid, tail = self.number.split("-")
         return f"{head}-****-{tail}"
 
+    def set_battery(self, value):
+        if value < 0:#범위는 함수 안에서 if문으로★
+            self.battery = 0
+        elif value > 100:
+            self.battery = 100
+        else:
+            self.battery = value #value가 0~100사이일 때★
+
+    def get_owner_and_number(self): #(self,owner,number)p(철수)에 owner,number 들어있으니 필요X★
+        return self.get_number() #return★
 
 # ────────────────────────────────────────────
 # 1. 직접 접근의 문제: 문지기를 그냥 지나쳐 버린다
@@ -72,7 +83,7 @@ print("volume =", p.volume)           # 7 이 안전하게 지켜졌다
 
 print("\n=== getter: 가공해서 꺼내 준다 ===")
 print("번호:", p.get_number())        # 010-****-1111  ← 원본은 숨기고 가공본만
-
+print(f"{p.owner} ({p.get_owner_and_number()})") #★
 # 이렇게 데이터를 메서드 뒤에 두고 보호하는 것을 '캡슐화'라고 합니다.
 # (지난 시간 SafefourCal 이 div 를 지켰던 것도 같은 정신입니다.
 #  나중에 채팅방(Room)을 만들 때 이 단어를 다시 만납니다)
@@ -132,9 +143,9 @@ print("volume =", p.volume)           # 3 이 지켜졌다
 # 섹션 1 의 담장 넘기(p.volume = 999)도 @property 앞에서는 안 통합니다.
 
 # ┌────────────────────────────────────────────────────┐
-# │ 이 프로그램 한 줄 요약:                                  │
-# │ 필수 재료는 생성자로, 살면서 바뀌는 값은 setter 로, │
-# │ 가공해 읽을 값은 getter 로 — 문지기가 필요할 때만.  │
+# │ 이 프로그램 한 줄 요약:                               │
+# │ 필수 재료는 생성자로, 살면서 바뀌는 값은 setter 로,      │ ★필수 재료 : owner, number/살면서 바뀌는 값 : set_battery, set_volume
+# │ 가공해 읽을 값은 getter 로 — 문지기가 필요할 때만.       │★가공할 거 : get_number
 # └────────────────────────────────────────────────────┘
 
 # [직접 해보기]
@@ -144,3 +155,5 @@ print("volume =", p.volume)           # 3 이 지켜졌다
 #    돌려줘 보세요. (힌트: 안에서 self.get_number() 를 불러 쓰면 됩니다)
 # 3. (생각) volume 처럼 검사가 필요한 값을 생성자에서도 받는다면,
 #    생성자 안에서도 검사해야 할까요? 안 하면 무슨 일이 생길까요?
+#    생성자 안에서도 검사해야합니다. 생성자 안에서 set_volume으로 검사하지않으면 조건에 맞지않는 volume 값을 입력했을 때도
+#    생성자에서 입력받은 volume값을 그대로 volume에 저장할 수 있습니다.
