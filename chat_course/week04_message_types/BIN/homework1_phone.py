@@ -21,24 +21,34 @@ class Phone:
         # TODO(1): 전달받은 owner 와 number 를 self.owner, self.number 에 저장하세요.
         #          전원 상태 self.power 도 False 로 준비하세요.
         #          (수업의 Phone 핵심 3총사: owner · number · power)
+        self.owner = owner
+        self.number = number
+        self.power = False
         pass
 
     def power_on(self):
         # TODO(2): self.power 를 True 로 바꾸고,
         #          "[철수의 폰] 전원 ON" 형태로 출력하세요.
+        self.power = True
+        print(f"[{self.owner}의 폰] 전원 ON")
         pass
 
     def power_off(self):
         # TODO(3): self.power 를 False 로 바꾸고,
         #          "[철수의 폰] 전원 OFF" 형태로 출력하세요.
+        self.power = False
+        print(f"[{self.owner}의 폰] 전원 OFF")
+
         pass
 
     def call(self, to):
         # TODO(4): "[철수의 폰] 010-2222-2222 에게 전화 📞" 형태로 출력하세요.
+        print(f"[{self.owner}의 폰] {to} 에게 전화 📞")
         pass
 
     def sms(self, to, text):
         # TODO(5): '[철수의 폰] 010-2222-2222 에게 문자: "밥 먹자" ✉️' 형태로 출력하세요.
+        print(f"[{self.owner}의 폰 {to} 에게 문자: {text} ✉️")
         pass
 
     def ring(self):
@@ -51,17 +61,21 @@ class Phone:
 class IPhone(Phone):
     def facetime(self, to):
         # TODO(6): "[철수의 아이폰] 영희 와 페이스타임 📹" 형태로 출력하세요.
+        print(f"[{self.owner}의 아이폰] {to} 와 페이스타임 📹 ")
         pass
 
     def ring(self):
         # TODO(7): 부모의 ring 을 오버라이딩합니다.
         #          "[철수의 아이폰] 띠리링~ 🎵" 형태로 출력하세요.
+        print(f"[{self.owner}의 아이폰] 띠리링~ 🎵")
+
         pass
 
 
 class GPhone(Phone):
     def ring(self):
         # TODO(8): "[영희의 갤럭시] Over the Horizon~ 🎶" 형태로 출력하세요.
+        print(f"[{self.owner}의 갤럭시] Over the Horizon~ 🎶")
         pass
 
 
@@ -103,3 +117,8 @@ if __name__ == "__main__":
 # [생각해 보기 — 답을 주석으로 적어 제출]
 # Q1. iphone.power_on() 을 호출했을 때 실행된 코드는 어느 클래스에 있나요?
 # Q2. for 문 안의 p.ring() 은 한 줄인데 왜 세 가지 다른 소리가 났나요?
+
+
+#1. 부모인 폰클래스
+#2. 배열 안의 폰클래스가 모두 다르고 각 클래스가 ring()을 오버라이딩 했기 때문에
+#  반복문 으로 돌렸을 때 객체의 클래스에 맞는 메소드를 불러옴 (다형성) 

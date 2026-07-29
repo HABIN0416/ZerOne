@@ -48,12 +48,21 @@ class EmojiMessage(Message):
     def parse(cls, sender, body):
         return cls(sender, body)
 
+class VoiceMessage(Message):
+    def __init__(self, sender, seconds):
+        super().__init__(sender)
+        self.seconds = seconds
+
+    def display(self):
+        return f"{self.sender}: 🎤 음성 메시지 ({self.seconds}초)"
+
+    @classmethod
+    def parse(cls, sender, body):
+        return cls(sender, body)
+
 
 # ────────────────────────────────────────────
 # TODO(1): 여기에 VoiceMessage 클래스를 만드세요.
-#   - Message 를 상속받는다
-#   - __init__(self, sender, seconds) : 부모 준비(super) + self.seconds 저장
-#   - display(self) : "철수: 🎤 음성 메시지 (7초)" 형태의 문자열을 return
 #   - parse(cls, sender, body) 클래스메서드 : body 가 "7" 같은 문자열로 온다
 #   (막히면 위의 EmojiMessage 를 그대로 보고 흉내 내세요. 그게 정상입니다!)
 # ────────────────────────────────────────────
@@ -65,8 +74,9 @@ def from_wire(line):
         return TextMessage.parse(sender, body)
     elif tag == "EMOJI":
         return EmojiMessage.parse(sender, body)
-    # TODO(2): VOICE 꼬리표가 오면 VoiceMessage 를 만들어 주도록
-    #          elif 한 개를 추가하세요.
+    elif tag == "VOICE":
+        return VoiceMessage.parse(sender, body)
+
     else:
         return TextMessage(sender, f"(알 수 없는 메시지: {line})")
 
