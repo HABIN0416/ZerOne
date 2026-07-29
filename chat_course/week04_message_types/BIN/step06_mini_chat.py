@@ -34,26 +34,32 @@ class TextMessage(Message):
         return f"{self.sender}: {self.text}"
 
     @classmethod
-    def parse(cls, sender, body):        # "철수", "안녕" → TextMessage 객체
+    def parse(cls, sender, body):        # "철수", "안녕" → TextMessage 객체 한 개 ##parse == 분석하다
         return cls(sender, body)
 
 
 class EmojiMessage(Message):
     EMOJI = {"smile": "😄", "heart": "❤️", "cry": "😢"}
 
-    def __init__(self, sender, name):
+    def __init__(self, sender, name): #name-"smile"
         super().__init__(sender)
         self.name = name
 
     def display(self):
-        face = self.EMOJI.get(self.name, "❓")
+        face = self.EMOJI.get(self.name, "❓")  #이모지 클래스변수에 접근함 + getter
         return f"{self.sender}: {face}"
-
+    ##setter- 살면서 바뀌니까 바뀔 때 검사가 필요함 걸러주기 위해서/getter- 읽을 때 가공이 필요할 때
     @classmethod
     def parse(cls, sender, body):
         return cls(sender, body)
 
+class StickerMessage(Message):
+    def __init__(self, sender, sticker_id):
+        super().__init__(sender)
+        self.sticker_id = sticker_id
 
+# msg = StickerMessage("철수", "sticker001")
+# msg.display()
 # ────────────────────────────────────────────
 # 3. 해석은 '단 한 곳'에서: 한 줄 → 알맞은 객체
 # ────────────────────────────────────────────
@@ -76,6 +82,7 @@ received_lines = [                       # 서버에서 이런 줄들이 왔다�
     "EMOJI|영희|smile",
     "TEXT|민수|과제 다 했어?",
     "EMOJI|철수|cry",
+    "EMOJI|영희|heart"
 ]
 
 print("=== 미니 채팅 화면 ===")
@@ -102,7 +109,7 @@ for line in received_lines:
 # 원리는 간단합니다: '꼬리표 → 클래스' 딕셔너리를 하나 만들어 두면,
 # if/elif 로 묻는 대신 딕셔너리에서 '찾으면' 됩니다.
 
-REGISTRY = {"TEXT": TextMessage, "EMOJI": EmojiMessage}    # 등록표
+REGISTRY = {"TEXT": TextMessage, "EMOJI": EmojiMessage}    # 등록표 딕셔너리 
 
 
 def from_wire2(line):

@@ -69,7 +69,7 @@ iphone.sms("영희", "지금 뭐해?") #부모 클래스인  Phone 에서 불러
 # # 2. 자식이 __init__ 을 새로 쓰고 싶다면? → super()
 # # ────────────────────────────────────────────
 class SmartPhone(Phone):
-    def __init__(self, owner, number, app): ##############################app이라는 새 파라미터가 필요하기 때문에 새로운 init이 필요함
+    def __init__(self, owner, number, app): ##############################얘만 app이라는 새 파라미터가 필요하기 때문에 새로운 init이 필요함
         super().__init__(owner, number)  # 부모의 __init__ 을 super로 먼저 불러오고 app추가 (핵심 3총사 준비)
         self.app = app                   # 그 다음 내 것을 추가
 

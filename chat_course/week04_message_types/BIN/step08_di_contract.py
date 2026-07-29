@@ -47,7 +47,15 @@ class Vibration(Ringtone):
     def play(self, owner):
         print(f"[{owner}의 폰] (무음) 지이잉- 📳")
 
+class Song(Ringtone):
+    def play(self, owner):
+        print(f"[{owner}의 폰] 노래가 흘러나온다~~~~")
 
+# class Broken(Ringtone):
+#     pass
+class Broken:
+    def play(self, owner):
+        print("ffffffff")
 # ────────────────────────────────────────────
 # 3. 본체: Step 7 과 완전히 같다 — 약속을 만들어도 본체는 안 바뀐다!
 # ────────────────────────────────────────────
@@ -77,8 +85,9 @@ print("=== 약속을 지킨 부품이라면 무엇이든 꽂힌다 ===")
 p1 = Phone("철수", "010-1111-1111", Marimba())      # 같은 Phone 클래스인데
 p2 = Phone("영희", "010-2222-2222", Vibration())    # 넣어 주는 부품만 다르다
 p3 = Phone("민수", "010-3333-3333", Bell())
-
-for p in [p1, p2, p3]:
+p4 = Phone("하빈", "010-4444-4444", Song())
+p5 = Phone("브로큰", "001-5555-5555", Broken())
+for p in [p1, p2, p3, p4, p5]:
     p.ring()                       # Step 4 의 다형성이 여기서 또 일한다!
 
 # Phone 클래스는 한 글자도 안 바꿨는데 세 가지 폰이 됐습니다.

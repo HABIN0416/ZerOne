@@ -57,17 +57,17 @@ class GPhone(Phone):
 
 
 # ────────────────────────────────────────────
-# 1. 비밀 1: 클래스도 '값'이다
+# 1. 비밀 1: 클래스도 '값'이다 -----> 자체로 출력가능, 변수에 담아서 출력 가능, 딕셔너리의 값으로 넣기 가능
 # ────────────────────────────────────────────
 print("=== 비밀 1: 클래스도 값이다 ===")
-print(IPhone)                         # 클래스 '자체'를 출력할 수 있다 (<class ...>)
+print(IPhone)                         # 클래스 '자체'를 출력할 수 있다 #<class '__main__.IPhone'>
 
 box = IPhone                          # 변수에 담을 수 있다! (괄호 없음 = 호출 아님)
 p = box("철수", "010-1111-1111")      # 담은 것으로 객체도 만들 수 있다
 p.ring()
 
 d = {"IPHONE": IPhone}                # 딕셔너리의 '값'으로도 넣을 수 있다
-p2 = d["IPHONE"]("영희", "010-2222-2222")   # 꺼내서 바로 객체 만들기
+p2 = d["IPHONE"]("영희", "010-2222-2222")   # 딕셔너리에서 밸류 꺼내서 바로 객체 만들기
 p2.ring()
 
 # IPhone 이라는 이름은 사실 '클래스가 담긴 변수'였던 겁니다.
@@ -81,14 +81,14 @@ REGISTRY = {}                         # 대리점 카탈로그: 기종코드 →
 
 
 def register(phone_class):            # 클래스를 받아서
-    print(f"   [카탈로그 등록] {phone_class.tag}")
+    print(f"   [카탈로그 등록] {phone_class.tag}") #Iphone이면 IPhone GPhone이면 GPhone
     REGISTRY[phone_class.tag] = phone_class   # 카탈로그에 올리고
     return phone_class                # ★ 받은 그대로 돌려준다 (이유는 4번에서!)
 
 
 print("\n=== 보통 함수 호출로 등록해 보기 ===")
 register(IPhone)                      # 숫자 넘기듯 클래스를 넘겼다
-print("카탈로그:", REGISTRY)
+print("카탈로그:", REGISTRY)            #딕셔너리 형태로 출력됨
 
 
 # ────────────────────────────────────────────
@@ -102,12 +102,12 @@ GPhone = register(GPhone)             # 출시하자마자 카탈로그에 올�
 
 
 # ────────────────────────────────────────────
-# 4. 비밀 2: @ 는 방금 그 한 줄의 '줄임 표기'다
+# 4. 비밀 2: @ 는 방금 그 한 줄의 '줄임 표기'다 
 # ────────────────────────────────────────────
 print("\n=== @register: 같은 일의 줄임 표기 ===")
 
 
-@register                             # ← "아래 클래스를 register 에 넣었다 빼라"
+@register                             # ← "아래 클래스를 자동으로 register 에 넣었다 빼라"
 class FoldPhone(Phone):               #    즉  FoldPhone = register(FoldPhone)
     tag = "FOLD"                      #    과 완전히 같은 뜻!
 
@@ -134,7 +134,7 @@ print("카탈로그:", REGISTRY)
 def from_order(line):
     """'IPHONE|철수|010-1111-1111' 주문서 한 줄 → 알맞은 폰 개통."""
     tag, owner, number = line.split("|")
-    phone_class = REGISTRY.get(tag)       # 카탈로그에서 기종을 찾아서
+    phone_class = REGISTRY.get(tag)       # 카탈로그에서 tag마 get헤 기종을 찾아서
     if phone_class is None:
         print(f"[대리점] 죄송합니다, 없는 기종입니다: {tag}")
         return None
@@ -151,7 +151,7 @@ for line in orders:
     phone = from_order(line)
     phone.ring()                     # 개통 확인 벨 — Step 4 의 다형성!
 
-# from_order 안에 if/elif 가 없습니다. 직원(from_order)은 기종을 모릅니다.
+# from_order 안에 if/elif 가 없습니다. 직원(from_order)은 기종을 모르고 카탈로그에게 넘김
 # 카탈로그가 찾아 주고, 울리는 건 각 기종이 알아서 합니다.
 
 
@@ -162,11 +162,18 @@ class RetroPhone(Phone):              # Step 4 [직접 해보기]의 그 옛날 
 
     def ring(self):
         print(f"[{self.owner}의 옛날폰] 벨~~~ 벨~~~ 🔔")
+@register ##얘 붙여야함
+class GamePhone(Phone):
+    tag ="GAME"
 
+    def ring(self):
+        print(f"[{self.owner}의 게임폰] 즐겜즐겜~~~~📳")
+        
 
 print("\n=== 신제품 출시: @register 한 줄이면 끝 ===")
 from_order("RETRO|할머니|010-9999-9999").ring()
-
+from_order("GAME|빈|010-4455-7893").ring()
+print(REGISTRY)
 
 # ────────────────────────────────────────────
 # 6. week04 와 짝짓기 — 이름만 다르고 완전히 같다
@@ -196,6 +203,6 @@ from_order("RETRO|할머니|010-9999-9999").ring()
 # 1. 신기종을 하나 출시해 보세요 (예: tag="GAME" 게임폰, ring 은 게임 소리).
 #    from_order 와 주문 처리 for 문은 한 글자도 고치지 않아야 합니다.
 # 2. (실험) register 의 return phone_class 줄을 지우고 실행해 보세요.
-#    어디서, 왜 문제가 생기나요? (힌트: print(FoldPhone) 을 찍으면 None)
+#    어디서, 왜 문제가 생기나요? (힌트: print(FoldPhone) 을 찍으면 None)----->****
 # 3. week04 의 messages.py 를 열어 @register 와 _REGISTRY 를 찾아
 #    밑줄을 긋고, 위 6번 표의 어느 칸과 짝인지 적어 보세요.

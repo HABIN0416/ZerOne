@@ -33,6 +33,10 @@ class Vibration:
     def play(self, owner):
         print(f"[{owner}의 폰] (무음) 지이잉- 📳")
 
+class Song:
+    def play(self, owner):
+        print(f"[{owner}의 폰] 노래가 흘러나온다~")
+
 
 # ────────────────────────────────────────────
 # 1. BEFORE: 부품을 '안에서' 직접 만들면 (박아 넣기)
@@ -62,12 +66,50 @@ class StuckPhone:
 print("=== BEFORE: 안에서 직접 만들면 ===")
 p = StuckPhone("철수", "010-1111-1111")
 p.ring()
+class StuckPhoneVibration:
+    def __init__(self, owner, number):
+        self.owner = owner          # ← 주의! 이것도 꼭 있어야 함 (아래 설명)
+        self.number = number
+        self.power = False
+        self.ringtone = Vibration()
 
+    def ring(self):
+        self.ringtone.play(self.owner)
+
+
+class StuckPhoneBell:
+    def __init__(self, owner, number):
+        self.owner = owner
+        self.number = number
+        self.power = False
+        self.ringtone = Bell()
+
+    def ring(self):
+        self.ringtone.play(self.owner)
 # 문제: 이 폰은 영원히 마림바만 울린다.
 #  - 진동으로 바꾸고 싶다?  → StuckPhone 클래스를 '수술'해야 한다.
 #  - 철수는 마림바, 영희는 진동?  → 클래스를 종류별로 또 만들어야 한다.
 # 어디서 본 고통이죠? "바꾸려면 코드를 뜯어야 한다" — if/elif 때와 같은 병입니다.
+# class StuckPhoneVibration:
+#     def __init__(self, owner, number):
+#         self.owner = owner          # ← 주의! 이것도 꼭 있어야 함 (아래 설명)
+#         self.number = number
+#         self.power = False
+#         self.ringtone = Vibration()
 
+#     def ring(self):
+#         self.ringtone.play(self.owner)
+
+
+# class StuckPhoneBell:
+#     def __init__(self, owner, number):
+#         self.owner = owner
+#         self.number = number
+#         self.power = False
+#         self.ringtone = Bell()
+
+#     def ring(self):
+#         self.ringtone.play(self.owner)
 
 # ────────────────────────────────────────────
 # 2. AFTER: 부품을 '밖에서' 만들어 넣어 주면 (= 의존성 주입, DI)
@@ -91,24 +133,28 @@ class Phone:
         print(f"[{self.owner}의 폰] {to} 에게 전화 📞")
 
     def ring(self):
-        self.ringtone.play(self.owner)     # 무엇이 꽂혔든 '약속(play)'만 부른다
+        self.ringtone.play(self.owner)     # 무엇이 꽂혔든 '마림바, 벨, 바이브레이션의 약속(play)'만 부른다
 
 
 print("\n=== AFTER: 밖에서 만들어 넣으면 ===")
 p1 = Phone("철수", "010-1111-1111", Marimba())      # 같은 Phone 클래스인데
 p2 = Phone("영희", "010-2222-2222", Vibration())    # 넣어 주는 부품만 다르다
 p3 = Phone("민수", "010-3333-3333", Bell())
-
-for p in [p1, p2, p3]:
+p4 = Phone("하빈", "010-4444-4444", Song())
+for p in [p1, p2, p3, p4]:
     p.ring()                       # Step 4 의 다형성이 여기서 또 일한다!
 
 # Phone 클래스는 한 글자도 안 바꿨는데 세 가지 폰이 됐습니다.
-# 밤에는 진동으로 바꾸고 싶다면? → 부품만 갈아 끼우면 끝:
-p1.ringtone = Vibration()
+
+p1.ringtone = Vibration() #밤에는 진동으로 바꾸고 싶다면? → 부품만 갈아 끼우면 끝:
+p2.ringtone = Song()
 print("\n--- 철수가 수업에 들어와서 진동으로 변경 ---")
 p1.ring()
-
-
+p2.ring()
+s = Phone("민수", "010-4444-9999", 5) #마림바, 벨, 바이브레이션이 아닌 다른 엉뚱한 값으로 꽂으면 객체는 만들어지지만
+# 울리는데 에러 뜬다 self.ringtone.play(self.owner)     # 무엇이 꽂혔든 '마림바, 벨, 바이브레이션의 약속(play)'만 부른다
+s.power_on()
+s.ring()
 # ────────────────────────────────────────────
 # 3. 정리: 왜 '밖에서' 인가?
 # ────────────────────────────────────────────
