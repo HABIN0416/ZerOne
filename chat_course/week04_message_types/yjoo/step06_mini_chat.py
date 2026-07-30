@@ -52,7 +52,13 @@ class EmojiMessage(Message):
     @classmethod
     def parse(cls, sender, body):
         return cls(sender, body)
-
+    
+class StickerMessage(Message):
+    def __init__(self, sender, sticker):
+        super().__init__(sender)
+        self.sticker = sticker
+    def display(self):
+        return f"{self.sticker}: {self.sticker}"
 
 # ────────────────────────────────────────────
 # 3. 해석은 '단 한 곳'에서: 한 줄 → 알맞은 객체
@@ -76,6 +82,7 @@ received_lines = [                       # 서버에서 이런 줄들이 왔다�
     "EMOJI|영희|smile",
     "TEXT|민수|과제 다 했어?",
     "EMOJI|철수|cry",
+    "EMOJI|영희|heart"
 ]
 
 print("=== 미니 채팅 화면 ===")
