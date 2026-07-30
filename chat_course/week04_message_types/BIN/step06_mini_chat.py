@@ -81,7 +81,7 @@ received_lines = [                       # 서버에서 이런 줄들이 왔다�
     "TEXT|철수|얘들아 안녕!",
     "EMOJI|영희|smile",
     "TEXT|민수|과제 다 했어?",
-    "EMOJI|철수|cry",
+    "EMOJI|철수|cry",  
     "EMOJI|영희|heart"
 ]
 

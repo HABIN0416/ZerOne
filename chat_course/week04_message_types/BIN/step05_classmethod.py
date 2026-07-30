@@ -37,7 +37,7 @@ class Phone:
     def show(self):
         print(f"📱 {self.owner} ({self.number})")
 
-    @classmethod
+    @classmethod #PHONE|철수|010-1111-1111 이따꾸로 생긴건 객체가 없어
     def from_wire(cls, line):                 # 문 2: 또 다른 문 (오늘 배울 문)
         tag, owner, number = line.split("|")  # 한 줄을 쪼개 재료를 준비하고
         return Phone(owner, number)             # cls(...) 로 객체를 만들어 돌려준다
@@ -70,7 +70,7 @@ class Phone:
 # 2. 방법 B: @classmethod — 만드는 방법도 클래스 안에!
 # ────────────────────────────────────────────
 print("\n=== 방법 B: @classmethod ===")
-p = Phone.from_wire("PHONE|철수|010-1111-1111")   # 객체 없이 '클래스 이름'으로 부른다!
+p = Phone.from_wire("PHONE|철수|010-1111-1111")  # "Phone 클래스를 통해 from_wire라는 클래스 메서드를 호출했고, 그 결과로 Phone 객체가 만들어져서 p에 저장됐다"
 p.show()
 s = Phone.from_colon("철수:010-1111-1111")
 print("\n=== 직접 해보기 ===")

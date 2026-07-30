@@ -1,0 +1,88 @@
+step06 'TEXT|철수|안녕'
+class TextMessage(Message):
+    def __init__(self, sender, text):
+        super().__init__(sender)
+        self.text = text
+
+    def display(self):
+        return f"{self.sender}: {self.text}"
+
+    @classmethod
+    def parse(cls, sender, body):        # "철수", "안녕" → TextMessage 객체 한 개 ##parse == 분석하다
+        return cls(sender, body)
+
+def from_wire(line):
+    """'TEXT|철수|안녕' 같은 한 줄을 알맞은 메시지 객체로 바꾼다."""
+    tag, sender, body = line.split("|", 2)
+    if tag == "TEXT":
+        return TextMessage.parse(sender, body)
+    elif tag == "EMOJI":
+        return EmojiMessage.parse(sender, body)
+    else:
+        return TextMessage(sender, f"(알 수 없는 메시지: {line})")
+
+for line in received_lines:
+    msg = from_wire(line)      # ① 한 줄 → 객체 (해석은 여기 한 곳)
+    print(msg.display())
+
+QQ 여기서     msg = from_wire(line)    이게 
+from_wire함수를 불러서 클래스메소드인 parse함수까지 갔잖아 그러면 
+msg=TextMessage.from_wire(line) 아닌가?
+
+AA from_wire 함수가 지역함수가 아니라 전역함수(클래스 밖)이기 때문에  클래스를 호출할 필요가 없음
+
+
+
+REGISTRY 버전
+REGISTRY = {"TEXT": TextMessage, "EMOJI": EmojiMessage}    # 등록표 딕셔너리 
+
+classmethod
+    def parse(cls, sender, body):        # "철수", "안녕" → TextMessage 객체 한 개 ##parse == 분석하다
+        return cls(sender, body)
+
+
+def from_wire2(line):
+    tag, sender, body = line.split("|", 2)
+    msg_class = REGISTRY.get(tag)          # ① 꼬리표로 클래스를 '찾아서'
+    if msg_class is None:                  #    (등록표에 없으면 대비책)
+        return TextMessage(sender, f"(알 수 없는 메시지: {line})")
+    return msg_class.parse(sender, body)   # ② 그 클래스에게 만들게 시킨다
+
+print("\n=== 등록표 버전: if/elif 가 사라졌다 ===")
+for line in received_lines:
+    print(from_wire2(line).display())
+
+철수 : 얘들아 안녕!
+
+
+
+###추가로 새기종이 들어올 때 ###
+REGISTRY = {}                         # 대리점 카탈로그: 기종코드 → 클래스
+            #딕셔너리 형태로 {'Iphone' : <class '__main__.Iphone'>}
+
+def register(phone_class):            # 클래스를 받아서
+    print(f"   [카탈로그 등록] {phone_class.tag}") #Iphone이면 IPhone GPhone이면 GPhone
+    REGISTRY[phone_class.tag] = phone_class   # 카탈로그에 올리고 phone_class.tag-키 phone_class-밸류 
+    return phone_class                # ★ 받은 그대로 돌려준다 (이유는 4번에서!)
+
+
+print("\n=== 보통 함수 호출로 등록해 보기 ===")
+register(IPhone)                      # 숫자 넘기듯 클래스를 넘겼다
+print("카탈로그:", REGISTRY)   
+출력값 카탈로그: {'IPHONE': <class '__main__.IPhone'>}
+
+
+@@register 데코레이터로 쓸 때
+뒤에 클래스가 만들어지면서 @register가 자동으로 register(FoldPhone)을 호출시키고 REGISTRY에 폴드가 들어감
+
+
+##주문서 함수##
+def from_order(line):
+    """'IPHONE|철수|010-1111-1111' 주문서 한 줄 → 알맞은 폰 개통."""
+    tag, owner, number = line.split("|")
+    phone_class = REGISTRY.get(tag)       # 카탈로그에서 tag마 get헤 기종을 찾아서
+    if phone_class is None:
+        print(f"[대리점] 죄송합니다, 없는 기종입니다: {tag}")
+        return None
+    return phone_class(owner, number)     # 그 클래스로 개통!
+    

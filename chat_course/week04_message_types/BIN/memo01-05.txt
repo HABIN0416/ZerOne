@@ -1,0 +1,70 @@
+step02b
+setter- 생성 이후에 값이 바뀔 때 씀
+
+@@데코레이터 
+출력할 때 괄호를 안붙여도 출력 가능
+class Player:
+    def __init__(self, hp):
+        self._hp = hp
+
+    def get_hp(self):      # 데코레이터 없음
+        return self._hp
+
+    @property
+    def hp(self):           # 데코레이터 있음
+        return self._hp
+
+player = Player(100)
+print(player.get_hp())  # 괄호 필요 → 100
+print(player.hp)        # 괄호 없이 접근 → 100 (자동으로 함수 실행됨)
+print(player.hp())      # 이렇게 쓰면 오히려 에러남! (100은 함수가 아니라 값이니까)
+
+Step03 상속성
+class SmartPhone(Phone):
+    def __init__(self, owner, number, app): ##############################얘만 app이라는 새 파라미터가 필요하기 때문에 새로운 init이 필요함
+        super().__init__(owner, number)  # 부모의 __init__ 을 super로 먼저 불러오고 app추가 (핵심 3총사 준비)
+        self.app = app                   # 그 다음 내 것을 추가
+
+    def run_app(self):
+        print(f"[{self.owner}의 폰] {self.app} 실행 🚀")
+
+**app을 왜 추가했냐----> 스마트폰 클래스를 만들 때 추가 데이터 속성으로 app이 필요하다
+그래서 기본값으로 app매개변수를 추가했고 동기화 시킴, 그리고 이를 다룰 함수를 추가함.
+
+step04
+오버라이딩 == Phone에 ring()넣엇는데 IPhone에도 똑같이  ring()함수 설정
+다형성 === p.ring()하나만 호출해도 철수, 영희, 민수, 할머니가 호출됨
+
+Step05
+@classmethod
+def from_wire(cls, line):                 # 문 2: 또 다른 문 (오늘 배울 문)
+    tag, owner, number = line.split("|")  # 한 줄을 쪼개 재료를 준비하고
+    return Phone(owner, number)             # cls(...) 로 객체를 만들어 돌려준다
+    # 쪼갠 재료(owner, number)가 정문(__init__)의 재료와 똑같죠?
+    # from_wire 는 결국 재료 손질 후 정문으로 안내하는 문입니다.
+
+p = Phone.from_wire("PHONE|철수|010-1111-1111")
+"Phone 클래스를 통해 from_wire라는 클래스 메서드를 호출했고, 그 결과로 Phone 객체가 만들어져서 p에 저장됐다"   
+
+인스턴스 메서드나 밖에다가 함수를 만들면?
+밖 함수는 == 캡슐화가 아니라 응집성이 떨어짐 
+인스턴스 메서드로는 == PHONE|철수|010-1111-1111 이런형태로는 객체가 안만들어져 있기 때문에 객체를 따로 만든 후 그거로 호출해야함
+dummy = Phone(None, None)      # 억지로 빈 객체부터 만들어야 함
+p = dummy.from_wire("PHONE|철수|010-1111-1111")  # 그제서야 호출 가능
+p.show()
+---> 번거로움(세 줄을 두 줄로 줄이기)
+따라서
+@classmethod
+def from_wire(cls, line):
+    tag, owner, number = line.split("|")
+    return Phone(owner, number)
+
+p = Phone.from_wire("PHONE|철수|010-1111-1111")
+p.show()
+
+추가로 아이폰으로 호출하고 싶으면
+class IPhone(Phone):                          # Step 3 에서 만든 그 상속!
+    def show(self):                           # Step 4 에서 배운 오버라이딩!
+        print(f"🍎 {self.owner} 의 아이폰 ({self.number})")
+s = IPhone.from_wire("PHONE|철수|010-1111-1111)
+s.show()

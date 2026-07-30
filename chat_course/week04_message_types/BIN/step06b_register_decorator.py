@@ -78,11 +78,11 @@ p2.ring()
 # 2. 그러니 함수에 클래스를 '넘길' 수도 있다 — register 는 보통 함수
 # ────────────────────────────────────────────
 REGISTRY = {}                         # 대리점 카탈로그: 기종코드 → 클래스
-
+            #딕셔너리 형태로 {'Iphone' : <class '__main__.Iphone'>}
 
 def register(phone_class):            # 클래스를 받아서
     print(f"   [카탈로그 등록] {phone_class.tag}") #Iphone이면 IPhone GPhone이면 GPhone
-    REGISTRY[phone_class.tag] = phone_class   # 카탈로그에 올리고
+    REGISTRY[phone_class.tag] = phone_class   # 카탈로그에 올리고 phone_class.tag-키 phone_class-밸류 
     return phone_class                # ★ 받은 그대로 돌려준다 (이유는 4번에서!)
 
 
