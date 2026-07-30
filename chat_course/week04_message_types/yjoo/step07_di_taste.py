@@ -33,6 +33,9 @@ class Vibration:
     def play(self, owner):
         print(f"[{owner}의 폰] (무음) 지이잉- 📳")
 
+class Song:
+    def play(self, owner):
+        print(f"[{owner}의 폰] Song-- 노래가 흘러나온다.")
 
 # ────────────────────────────────────────────
 # 1. BEFORE: 부품을 '안에서' 직접 만들면 (박아 넣기)
@@ -43,7 +46,7 @@ class StuckPhone:
         self.owner = owner
         self.number = number
         self.power = False
-        self.ringtone = Marimba()     # ← 폰이 벨소리를 '직접' 만든다 = 박아 넣기 ★22번줄처럼 class를 받고있으면 잘못되고있는 것! 2:30:00참고
+        self.ringtone = Marimba()     # ← 폰이 벨소리를 '직접' 만든다 = 박아 넣기
 
     def power_on(self):
         self.power = True
@@ -68,6 +71,35 @@ p.ring()
 #  - 철수는 마림바, 영희는 진동?  → 클래스를 종류별로 또 만들어야 한다.
 # 어디서 본 고통이죠? "바꾸려면 코드를 뜯어야 한다" — if/elif 때와 같은 병입니다.
 
+class StuckPhoneWithBell:
+    def __init__(self, owner, number):
+        self.owner = owner
+        self.number = number
+        self.power = False
+        self.ringtone = Bell()
+
+    def ring(self):
+        self.ringtone.play(self.owner)
+
+class StuckPhoneWithVibration:
+    def __init__(self, owner, number):
+        self.owner = owner
+        self.number = number
+        self.power = False
+        self.ringtone = Vibration()
+
+    def ring(self):
+        self.ringtone.play(self.owner)
+
+class StuckPhoneWithSong:
+    def __init__(self, owner, number):
+        self.owner = owner
+        self.number = number
+        self.power = False
+        self.ringtone = Song()
+
+    def ring(self):
+        self.ringtone.play(self.owner)
 
 # ────────────────────────────────────────────
 # 2. AFTER: 부품을 '밖에서' 만들어 넣어 주면 (= 의존성 주입, DI)
@@ -98,8 +130,9 @@ print("\n=== AFTER: 밖에서 만들어 넣으면 ===")
 p1 = Phone("철수", "010-1111-1111", Marimba())      # 같은 Phone 클래스인데
 p2 = Phone("영희", "010-2222-2222", Vibration())    # 넣어 주는 부품만 다르다
 p3 = Phone("민수", "010-3333-3333", Bell())
+p4 = Phone("영주", "010-1234-1234", Song())
 
-for p in [p1, p2, p3]:
+for p in [p1, p2, p3, p4]:
     p.ring()                       # Step 4 의 다형성이 여기서 또 일한다!
 
 # Phone 클래스는 한 글자도 안 바꿨는데 세 가지 폰이 됐습니다.
