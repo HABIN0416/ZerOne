@@ -126,8 +126,12 @@ class SocketTransport(Transport):
 # 조립(Composition Root): 여기서 부품을 만들어 '주입'한다
 # ============================================================
 def build_server():
-    codec = SecretCodec() if USE_SECRET else PlainCodec()
-    store = InMemoryStore()         # ← FileStore("chat_log.txt") 로 바꿔 끼우면 파일 저장
+    # codec = SecretCodec() if USE_SECRET else PlainCodec()
+    if USE_SECRET:
+        codec = SecretCodec()
+    else:
+        codec = PlainCodec()
+    store = FileStore("대화내용.txt")         # ← FileStore("chat_log.txt") 로 바꿔 끼우면 파일 저장
     return ChatServer(codec, store)
 
 
