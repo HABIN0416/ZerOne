@@ -11,12 +11,6 @@ Week 6 - interfaces.py  :  '계약(인터페이스)' 정하기
 
 서버 핵심(ChatServer)은 '이 계약을 지키는 부품'이면
 진짜든 가짜든 가리지 않고 받아서 쓴다. → 교체·테스트가 쉬워진다.
-
-from abc import ABC, abstractmethod
-- ABC : 이걸 상속하면 "이건 추상 클래스(그 자체로는 객체를 못 만드는, 약속만 있는 클래스)"가 됩니다.
-        abc = Abstract Base Class (추상 베이스 클래스)의 약자
-- abstractmethod : 메서드에 @abstractmethod를 붙이면 "자식이 반드시 구현해야 하는 메서드"가 됩니다.
-        추상 메서드
 """
 
 from abc import ABC, abstractmethod

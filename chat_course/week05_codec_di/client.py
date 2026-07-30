@@ -23,7 +23,7 @@ CODEC = SecretCodec() if USE_SECRET else PlainCodec()
 
 
 def receive(sock):
-    reader = sock.makefile("r", encoding="utf-8")
+    reader = sock.makefile("r", encoding="utf-8")   # 줄 단위로 읽기 (3주차: recv 는 긴 줄을 자름)
     while True:
         line = reader.readline()
         if not line:

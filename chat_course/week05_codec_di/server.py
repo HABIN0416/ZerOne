@@ -142,7 +142,7 @@ def main():
     print(f"[서버] {HOST}:{PORT} 대기 중... (Ctrl+C 종료)")
 
     def handle(conn, addr):
-        reader = conn.makefile("r", encoding="utf-8")
+        reader = conn.makefile("r", encoding="utf-8")   # 줄 단위로 읽기 (3주차: recv 는 긴 줄을 자름)
         transport = SocketTransport(conn)
         nickname = (reader.readline() or "").strip()
         if not nickname:

@@ -191,5 +191,49 @@ class Deck:
             first = False
         self._notes(s, notes)
 
+    def _style_cell(self, cell, bg, fg, bold, size=16, align_left=True):
+        from pptx.enum.text import MSO_ANCHOR
+        from pptx.enum.text import PP_ALIGN
+        cell.fill.solid()
+        cell.fill.fore_color.rgb = bg
+        cell.margin_left = cell.margin_right = Inches(0.12)
+        cell.margin_top = cell.margin_bottom = Inches(0.04)
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        p = cell.text_frame.paragraphs[0]
+        p.alignment = PP_ALIGN.LEFT if align_left else PP_ALIGN.CENTER
+        for r in p.runs:
+            r.font.name = FONT
+            r.font.size = Pt(size)
+            r.font.bold = bold
+            r.font.color.rgb = fg
+
+    def table(self, title, headers, rows, col_widths=None, caption="", notes=""):
+        """빈칸 채우기용 표 슬라이드. rows 의 셀에 '?' 를 넣으면 학생이 완성한다.
+        headers: [열제목...], rows: [[셀,...], ...], col_widths: 인치 리스트(선택)."""
+        s = self._slide(WHITE)
+        self._heading(s, title)
+        n_rows, n_cols = len(rows) + 1, len(headers)
+        left, top, width = Inches(0.75), Inches(1.75), Inches(11.80)
+        height = Inches(0.55 * n_rows)
+        gtable = s.shapes.add_table(n_rows, n_cols, left, top, width, height).table
+        gtable.first_row = False          # 기본 스타일 밴딩 끄고 직접 칠함
+        gtable.horz_banding = False
+        if col_widths:
+            for j, w in enumerate(col_widths):
+                gtable.columns[j].width = Inches(w)
+        for j, h in enumerate(headers):          # 머리행
+            c = gtable.cell(0, j)
+            c.text = h
+            self._style_cell(c, ACCENT, WHITE, bold=True, size=16)
+        for i, row in enumerate(rows, start=1):  # 본문
+            for j, val in enumerate(row):
+                c = gtable.cell(i, j)
+                c.text = val
+                bg = WHITE if i % 2 == 1 else LIGHT_BG
+                self._style_cell(c, bg, BODY, bold=False, size=16)
+        if caption:
+            self._put(self._textbox(s, 0.80, 6.80, 11.80, 0.55), caption, 16, MUTED)
+        self._notes(s, notes)
+
     def save(self, path):
         self.prs.save(path)
