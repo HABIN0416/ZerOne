@@ -4,7 +4,7 @@ counter = 0
 
 def increment():
     global counter
-    for _ in range(1_0000):
+    for _ in range(1_000):
         v = counter
         counter = v + 1
 
@@ -12,5 +12,6 @@ threads = [threading.Thread(target=increment) for _ in range(5)]
 for t in threads: t.start()
 for t in threads: t.join()
 
-print(f"기대값: 50000, 실제값: {counter}")
+print(f"기대값: 5000, 실제값: {counter}")
 ## 실행해보면 어 이게 왜 동작하는거 같지????
+## 1000이 나와야하는데 5000이 나오는 이유
