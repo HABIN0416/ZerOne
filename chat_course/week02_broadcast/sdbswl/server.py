@@ -27,14 +27,19 @@ clients = {} #배열(dictionary) key-socket value-nickname #####################
 clients_lock = threading.Lock()
 
 
-def broadcast(text, exclude = None):
+def broadcast(text):
     """접속한 모두에게 같은 문장을 보낸다 (= 중앙 우체국에서 전원에게 배달)."""
     data = text.encode("utf-8")
     with clients_lock:
+<<<<<<< HEAD:chat_course/week02_broadcast/sdbswl/server.py
+        targets = list(clients.keys())   # 잠깐 복사해서 안전하게 순회
+    for sock in targets:
+=======
         targets = list(clients.keys())   # 잠깐 전화선만 복사해서 안전하게 순회
     for sock in targets: #####내가 쓴 메세지는 화면에 한번만 보이게 다듬기############### 
         if sock is exclude:
             continue #건너뛴다
+>>>>>>> upstream/main:chat_course/week02_broadcast/BIN/server.py
         try:
             sock.sendall(data)
         except OSError:
@@ -62,32 +67,26 @@ def handle(conn, addr):
     # 이 손님이 보내는 말을 계속 받아서 전원에게 뿌린다
     while True:
         try:
-            data = conn.recv(1024) #메세지를 컴퓨터언어로 보냄
-        except OSError: #에러뜨면 넘어가
+            data = conn.recv(1024)
+        except OSError:
             break
-        if not data:          # 빈 데이터 = 손님이 나갔다 넘어가
+        if not data:          # 빈 데이터 = 손님이 나갔다
             break
-        message = data.decode("utf-8") #사람이 볼 수 있는 언어로 바꿔
-
-        #"/count" 명령어 처리
-        if message.strip() == "/count": #.strip()은 "/count"를 치고 엔터를 누르면 서버에서 줄바꿈으로 인식할 수 있어 공백을 제거하기 위해 쓰임
-            with clients_lock: #락 걸고 클라이언트 목록 세고
-                count = len(clients)
-            try: #"/count" 이거 친 사람한테만 현재 접속자 수 보여줌 사람이 볼 수 있는 언어로 바꿔서 
-                conn.sendall(f"[서버]현재 접속자 수 : {count}명\n".encode("utf-8"))
-            except OSError: #try는 "일단 이거 해봐" 이고, except는 "만약 이거 하다가 에러 터지면, 프로그램 죽지 말고 이렇게 대처해"
-                break
-            continue
-        broadcast(f"{nickname}: {message}", exclude=conn) #계속 채팅
+        message = data.decode("utf-8")
+        broadcast(f"{nickname}: {message}")
 
     # 퇴장 처리: 목록에서 빼고, 모두에게 알린다
     with clients_lock:
         clients.pop(conn, None)
         count = len(clients)
-        #남은 사람들 목록 보여주기
-        remaining = list(clients.values()) #{소켓:닉네임}이니까 닉네임만 뽑아야하니 value만 뽑아서 저장
-    conn.close() #손님 나가고 전용 소켓 닫기
+    conn.close()
     print(f"[서버] {nickname} 퇴장  (현재 {count}명)")
+<<<<<<< HEAD:chat_course/week02_broadcast/sdbswl/server.py
+    broadcast(f"*** {nickname}님이 나갔습니다 (현재 {count}명) ***")
+
+
+def main():
+=======
     if remaining:
         names = ", ".join(remaining)
         broadcast(f"*** {nickname}님이 나갔습니다 (남은 사람: {names}) ***")
@@ -95,6 +94,7 @@ def handle(conn, addr):
         broadcast(f"*** {nickname}님이 나갔습니다 (남은 사람 없음) ***")
     
 def main(): ###############메인은 '나'라고 생각하면됨
+>>>>>>> upstream/main:chat_course/week02_broadcast/BIN/server.py
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind((HOST, PORT))
