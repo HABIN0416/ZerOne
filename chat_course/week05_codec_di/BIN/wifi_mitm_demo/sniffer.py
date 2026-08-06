@@ -30,7 +30,7 @@ SERVER_HOST, SERVER_PORT = "192.168.137.50", 5000  #진짜 server.py
 # (심화) True 로 켜면, 코드에 '박힌' 열쇠로 XOR 암호를 풀어 본다.
 #   → "열쇠가 코드에 있으면 암호도 뚫린다 = 진짜 보안이 아니다"
 SHOW_CRACK = False
-XOR_KEY = 42
+XOR_KEY = 42 ##이게 보이면 바로 뚫리지? --> 코드에 박아두지 말고 매번 다르게 아무도 훔쳐보지 못하게 몰래 주고받아야함
 
 _BASE64_CHARS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
 
@@ -43,9 +43,9 @@ def looks_readable(text):
 def try_crack(text):
     import base64
     try:
-        raw = base64.b64decode(text)
-        plain = bytes(b ^ XOR_KEY for b in raw).decode("utf-8")
-        return plain if "|" in plain else None
+        raw = base64.b64decode(text) #암호문의 포장지를 벗겨서 원래 바이트로 되돌림
+        plain = bytes(b ^ XOR_KEY for b in raw).decode("utf-8") # XOR로 암호풀기
+        return plain if "|" in plain else None #평문이 | 있으면 제대로 풀음
     except Exception:
         return None
 

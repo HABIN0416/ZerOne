@@ -33,24 +33,24 @@ from messages import Message
 class PlainCodec(Codec):
     name = "평문"
 
-    def encode(self, message):
+    def encode(self, message): #@abstractmethod로 자식들이 반드시 구현
         return (message.to_wire() + "\n").encode("utf-8")
 
-    def decode(self, line):
-        return Message.from_wire(line)
+    def decode(self, line):  #@abstractmethod로 자식들이 반드시 구현
+        return Message.from_wire(line) 
 
 
 SECRET_KEY = 42   # 교육용. 진짜 보안 아님!
 
 
 def _xor(data, key):
-    return bytes(b ^ key for b in data)
+    return bytes(b ^ key for b in data) #데이터에 있는 각 바이트에 대해서 키를 가지고 XOR 시켜줌
 
 
 class SecretCodec(Codec):
     name = "암호화(XOR)"
 
-    def __init__(self, key=SECRET_KEY):
+    def __init__(self, key=SECRET_KEY): #암호화 키
         self.key = key
 
     def encode(self, message):
