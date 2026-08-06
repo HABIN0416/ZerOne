@@ -51,11 +51,10 @@ class GPhone(Phone):
 
 
 print("=== 상속: 안 만든 기능도 쓸 수 있다 ===")
-iphone = IPhone("철수", "010-1111-1111") # !!IPhone이 Phone을 상속 받으니까 IPhone에 생성자함수없어도 이게 가능!!
+iphone = IPhone("철수", "010-1111-1111")
 iphone.power_on()                # IPhone 에는 power_on 이 없는데 된다! (부모 것)
 iphone.call("010-2222-2222")     # 이것도 부모 것
 iphone.facetime("영희")          # 이건 자기 것
-iphone.sms("010-1231-0438", "점심메뉴추천")
 
 gphone = GPhone("영희", "010-2222-2222")
 gphone.power_on()
@@ -64,31 +63,14 @@ gphone.circle_search("맛집")
 
 # IPhone 클래스 안에는 facetime 딱 하나만 썼는데,
 # power_on / power_off / call / sms 가 전부 됩니다. 이게 상속의 힘.
-print("=== 영주의 폴더븐 폰 ===")
-class FoldPhone(Phone):
-    def __init__(self, owner, number): #상속 받아온 거
-        super().__init__(owner, number)# 부모의 메서드 실행
-        self.folded = False
-    def fold(self):
-        self.folded = True
-        print(f"[{self.owner}의 폴더블폰] 펼쳤습니다.")
 
-    def unfold(self):
-        self.folded = False
-        print(f"[{self.owner}의 폴더블폰] 접었습니다.")
-
-foldphone = FoldPhone("영주", "010-2323-3232")
-foldphone.power_on()
-foldphone.fold()
-foldphone.call("010-2312-1233")
-foldphone.unfold()
 
 # ────────────────────────────────────────────
 # 2. 자식이 __init__ 을 새로 쓰고 싶다면? → super()
 # ────────────────────────────────────────────
 class SmartPhone(Phone):
-    def __init__(self, owner, number, app): #매개변수 app추가 하고싶으니까 super로 부모거 상속 받아온거.
-        super().__init__(owner, number)  # 부모의 __init__ !(메서드)!을 먼저 실행 (핵심 3총사 준비)
+    def __init__(self, owner, number, app):
+        super().__init__(owner, number)  # 부모의 __init__ 을 먼저 실행 (핵심 3총사 준비)
         self.app = app                   # 그 다음 내 것을 추가
 
     def run_app(self):
@@ -118,4 +100,3 @@ sp.run_app()
 # [직접 해보기]
 # 1. FoldPhone(폴더블) 클래스를 만들어 fold()/unfold() 기능을 덧붙여 보세요.
 # 2. IPhone 으로 sms 를 보내 보세요. 어느 클래스의 코드가 실행된 걸까요?
-#    Phone class의 sms 실행

@@ -17,7 +17,7 @@
 import socket
 import threading
 
-HOST = "127.0.0.1"
+HOST = "192.168.0.41"
 PORT = 5001                        # 진짜 server.py(5000)와 겹치지 않게 다른 포트
 
 clients = {}                       # conn -> nickname

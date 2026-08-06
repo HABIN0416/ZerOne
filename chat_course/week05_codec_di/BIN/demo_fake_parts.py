@@ -19,7 +19,7 @@ from codec import PlainCodec, SecretCodec
 from messages import TextMessage
 from server import ChatServer
 
-
+ 
 # ── 가짜 부품들 (계약만 지키면 진짜 대신 쓸 수 있다 — 4주차 step08 의 그 계약!) ──
 class FakeTransport(Transport):
     """진짜 소켓 대신, 보낸 바이트를 리스트에 '기록만' 한다."""

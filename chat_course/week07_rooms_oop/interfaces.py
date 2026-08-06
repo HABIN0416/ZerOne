@@ -52,8 +52,3 @@ class Transport(ABC):
     @abstractmethod
     def send(self, data):
         """bytes 를 이 연결로 보낸다."""
-
-"""
-추상클래스 - 대가리(선언부만)
-인터페이스 - 구현부-->다중상속가능
-"""

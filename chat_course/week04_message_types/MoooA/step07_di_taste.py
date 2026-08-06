@@ -4,7 +4,7 @@
 ※ 이 스텝은 '맛보기'입니다. 깊은 내용(인터페이스 문서화, 테스트)은
   나중에 Codec 을 배운 다음 제대로 다룹니다. 오늘은 딱 한 가지 질문만:
 
-      "부품을 왜 안에서 만들지 않고, 밖에서 만들어 넣어 줄까?"★kyouno 주제
+      "부품을 왜 안에서 만들지 않고, 밖에서 만들어 넣어 줄까?"
 
 새로 배울 문법은 없습니다! Step 4 의 '공통 약속'(같은 이름의 메서드)만
 그대로 씁니다. 소재도 그대로 전화기 — 이번엔 '벨소리'가 부품입니다.
@@ -33,9 +33,6 @@ class Vibration:
     def play(self, owner):
         print(f"[{owner}의 폰] (무음) 지이잉- 📳")
 
-class Song:
-    def play(self, owner):
-        print(f"[{owner}의 폰] Song-- 노래가 흘러나온다.")
 
 # ────────────────────────────────────────────
 # 1. BEFORE: 부품을 '안에서' 직접 만들면 (박아 넣기)
@@ -71,35 +68,6 @@ p.ring()
 #  - 철수는 마림바, 영희는 진동?  → 클래스를 종류별로 또 만들어야 한다.
 # 어디서 본 고통이죠? "바꾸려면 코드를 뜯어야 한다" — if/elif 때와 같은 병입니다.
 
-class StuckPhoneWithBell:
-    def __init__(self, owner, number):
-        self.owner = owner
-        self.number = number
-        self.power = False
-        self.ringtone = Bell()
-
-    def ring(self):
-        self.ringtone.play(self.owner)
-
-class StuckPhoneWithVibration:
-    def __init__(self, owner, number):
-        self.owner = owner
-        self.number = number
-        self.power = False
-        self.ringtone = Vibration()
-
-    def ring(self):
-        self.ringtone.play(self.owner)
-
-class StuckPhoneWithSong:
-    def __init__(self, owner, number):
-        self.owner = owner
-        self.number = number
-        self.power = False
-        self.ringtone = Song()
-
-    def ring(self):
-        self.ringtone.play(self.owner)
 
 # ────────────────────────────────────────────
 # 2. AFTER: 부품을 '밖에서' 만들어 넣어 주면 (= 의존성 주입, DI)
@@ -130,9 +98,8 @@ print("\n=== AFTER: 밖에서 만들어 넣으면 ===")
 p1 = Phone("철수", "010-1111-1111", Marimba())      # 같은 Phone 클래스인데
 p2 = Phone("영희", "010-2222-2222", Vibration())    # 넣어 주는 부품만 다르다
 p3 = Phone("민수", "010-3333-3333", Bell())
-p4 = Phone("영주", "010-1234-1234", Song())
 
-for p in [p1, p2, p3, p4]:
+for p in [p1, p2, p3]:
     p.ring()                       # Step 4 의 다형성이 여기서 또 일한다!
 
 # Phone 클래스는 한 글자도 안 바꿨는데 세 가지 폰이 됐습니다.

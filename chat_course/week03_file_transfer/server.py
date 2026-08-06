@@ -21,7 +21,7 @@ Week 3 - 서버 (server.py)  :  파일도 보내고 싶다 → 분기 지옥의 
 import socket
 import threading
 
-HOST = "127.0.0.1"
+HOST = "192.168.0.41"
 PORT = 5000
 MAX_FILE_BYTES = 5 * 1024 * 1024   # 교육용 파일 크기 제한 (5MB)
 

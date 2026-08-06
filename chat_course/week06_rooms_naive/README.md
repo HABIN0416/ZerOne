@@ -11,8 +11,18 @@
 |------|------|
 | `server.py` | 전역 `rooms` / `nicknames` / `where` + 명령 처리 (엉성) |
 | `client.py` | 방 명령을 쓰는 클라이언트 |
-| `messages.py`, `codec.py` | 이전 주차 재사용 |
+| `messages.py` | 이전 주차 재사용 |
+| `codec.py` | Plain/Secret(교육용) + **AesGcmCodec(AES-256-GCM)** ← 이번 주부터 실제 사용 |
 | `make_ppt.py` / `Week06_방_엉성한버전.pptx` | 강의 슬라이드 |
+
+## 준비물 (이번 주부터 추가)
+평문을 없애고 **AES-256-GCM** 으로 암호화합니다. AES 는 파이썬 표준에 없어 설치 필요:
+```bash
+pip install cryptography
+```
+> 서버·클라이언트가 `codec.py` 의 같은 `SECRET_PASSPHRASE` 를 써야 서로 통합니다.
+> AES-GCM 은 **암호화(기밀성) + 변조 감지(무결성)** 를 함께 줍니다. 다만 키 교환·서버
+> 인증은 없어서 '완전한' 보안은 아니고, 그 둘까지 해주는 것이 TLS(HTTPS/WSS)입니다.
 
 ## 실행 방법
 ```bash

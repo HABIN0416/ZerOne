@@ -50,17 +50,6 @@ class EmojiMessage(Message):
 
 
 # ────────────────────────────────────────────
-class VoiceMessage(Message):
-    def __init__(self, sender, seconds):
-        super().__init__(sender)
-        self.seconds = seconds
-
-    def display(self):
-        return f"{self.sender}: 🎤 음성 메시지 ({self.seconds}초)"
-    
-    @classmethod
-    def parse(cls, sender, body):
-        return cls(sender, body)
 # TODO(1): 여기에 VoiceMessage 클래스를 만드세요.
 #   - Message 를 상속받는다
 #   - __init__(self, sender, seconds) : 부모 준비(super) + self.seconds 저장
@@ -76,8 +65,6 @@ def from_wire(line):
         return TextMessage.parse(sender, body)
     elif tag == "EMOJI":
         return EmojiMessage.parse(sender, body)
-    elif tag == "VOICE":
-        return VoiceMessage.parse(sender, body)
     # TODO(2): VOICE 꼬리표가 오면 VoiceMessage 를 만들어 주도록
     #          elif 한 개를 추가하세요.
     else:
@@ -105,7 +92,6 @@ if __name__ == "__main__":
 
 # [생각해 보기 — 답을 주석으로 적어 제출]
 # Q1. 새 종류를 추가하면서 고친 곳은 몇 군데였나요? (클래스 추가 제외)
-#     from_wire 안에 elif tag == "VOICE": 한 줄 추가.
 # Q2. week04 의 messages.py 는 '등록표(registry)' 덕분에 from_wire 의
 #     elif 조차 안 고칩니다. 수업 후 messages.py 에서 그 장치(@register)를
 #     찾아 밑줄을 그어 오세요.
