@@ -55,6 +55,8 @@ class SilentPhone(Phone):
 print("=== 오버라이딩 ===")
 Phone("아무개", "010-0000-0000").ring()      # 부모의 ring
 IPhone("철수", "010-1111-1111").ring()       # 자식이 다시 쓴 ring 이 실행된다
+GPhone("dlfma","010-1234-2222").ring()
+SilentPhone("ddddd","010-2223-4444").ring()
 
 
 # ────────────────────────────────────────────

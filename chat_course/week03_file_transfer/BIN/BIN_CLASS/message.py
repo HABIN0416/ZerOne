@@ -79,7 +79,7 @@ class TextMessage(Message):
     type_tag = "TEXT"
 
     def __init__(self, text, sender=None):
-        self.text = text
+        self.text = text ##
         self.sender = sender
 
     @classmethod
@@ -121,7 +121,7 @@ class FileMessage(Message):
 
     @classmethod
     def from_client_line(cls, line):
-        _, filename, b64 = line.split("|", 2)
+        _, filename, b64 = line.split("|", 2) ##
         return cls(filename, b64)
 
     def to_client_line(self):
