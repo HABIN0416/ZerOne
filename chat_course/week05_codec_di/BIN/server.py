@@ -21,7 +21,7 @@ import socket
 import threading
 
 from interfaces import MessageStore, Transport
-from codec import PlainCodec, SecretCodec
+from codec import PlainCodec, SecretCodec, AES256Codec
 from messages import SystemMessage
 
 HOST = "127.0.0.1"
@@ -128,15 +128,15 @@ class SocketTransport(Transport):
 def build_server():
     # codec = SecretCodec() if USE_SECRET else PlainCodec()
     if USE_SECRET:
-        codec = SecretCodec()
+        codec = AES256Codec() ##SecretCodec()대신 끼워넣기
     else:
         codec = PlainCodec()
-    store = FileStore("대화내용.txt")         # ← FileStore("chat_log.txt") 로 바꿔 끼우면 파일 저장
+    store = FileStore("대화내용.txt")         # ← FileStore("chat_log.txt") 로 바꿔 끼우면 파일 저장 디폴트가 chat_log.txt
     return ChatServer(codec, store)
 
 
 def main():
-    server = build_server()
+    server = build_server()  #####DI
     print(f"[조립] Codec={server.codec.name}, Store={type(server.store).__name__}")
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
