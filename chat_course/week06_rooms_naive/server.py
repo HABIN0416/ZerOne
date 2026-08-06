@@ -26,12 +26,12 @@ Week 6 - 서버 (server.py)  :  방(Room) — 일부러 엉성한 버전
 import socket
 import threading
 
-from codec import PlainCodec
+from codec import AesGcmCodec
 from messages import TextMessage, SystemMessage
 
 HOST = "127.0.0.1"
 PORT = 5000
-CODEC = PlainCodec()
+CODEC = AesGcmCodec()   # AES-256-GCM 로 암호화 (평문 제거). 클라이언트도 같은 codec/암호여야 통함
 
 # ── 전역 상태 (여기저기서 수정된다 = 엉성함의 근원) ──
 rooms = {}          # 방이름 -> [소켓, ...]
@@ -61,6 +61,11 @@ def handle_command(conn, text):
     cmd = parts[0]
     arg = parts[1].strip() if len(parts) > 1 else ""
     nickname = nicknames[conn]
+
+    # 방 이름이 필요한 명령인데 이름을 안 적었으면 막는다 (빈 이름 방 생성 방지)
+    if cmd in ("/create", "/join") and not arg:
+        send_to(conn, SystemMessage(f"방 이름을 함께 적어주세요:  {cmd} 방이름"))
+        return
 
     if cmd == "/create":
         with lock:
