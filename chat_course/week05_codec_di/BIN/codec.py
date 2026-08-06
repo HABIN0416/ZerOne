@@ -28,6 +28,7 @@ import base64
 from interfaces import Codec
 from messages import Message
 
+##XOR로 쓰는 이유 ---> 하나만 날라가도 나머지로 살릴 수 있음
 
 class PlainCodec(Codec):
     name = "평문"
