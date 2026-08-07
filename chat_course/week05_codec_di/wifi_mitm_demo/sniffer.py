@@ -84,7 +84,7 @@ def pump(src, dst, direction):
 def handle(client_conn, addr):
     try:
         server_conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_conn.connect((SERVER_HOST, SERVER_PORT))
+        server_conn.connect((SERVER_HOST, SERVER_PORT)) 
     except OSError:
         print(f"[중간자] 진짜 서버({SERVER_HOST}:{SERVER_PORT})에 연결 실패 — "
               f"그 컴퓨터의 server.py 실행/방화벽/IP 를 확인하세요.")

@@ -114,3 +114,5 @@ server.on_line(a, TextMessage("그래도 가야지").to_wire())   # 저장은 �
 print("영희는 메시지를 받았나?:", "예 ✅ (저장 실패와 무관하게 전달됨)" if b.sent else "아니오")
 
 print("\n✔ 네 가지 모두 '소켓 한 번 안 열고' 확인했습니다. 이게 DI 의 힘입니다.")
+
+

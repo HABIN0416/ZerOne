@@ -10,41 +10,42 @@
 # ────────────────────────────────────────────
 # 방법 1. 변수를 따로따로 만든다
 # ────────────────────────────────────────────
-phone1_owner = "철수"
-phone1_number = "010-1111-1111"
-phone1_power = False
+# phone1_owner = "철수"
+# phone1_number = "010-1111-1111"
+# phone1_power = False
 
-phone2_owner = "영희"
-phone2_number = "010-2222-2222"
-phone2_power = False
+# phone2_owner = "영희"
+# phone2_number = "010-2222-2222"
+# phone2_power = False
 
-# 문제: 전화기가 10대면? 변수가 30개!
-#       "철수의 전원상태"가 어느 변수인지 이름으로만 구분해야 한다.
-
-
-# ────────────────────────────────────────────
-# 방법 2. 딕셔너리 + 함수
-# ────────────────────────────────────────────
-def make_phone(owner, number):
-    return {"owner": owner, "number": number, "power": False}
+# # 문제: 전화기가 10대면? 변수가 30개!
+# #       "철수의 전원상태"가 어느 변수인지 이름으로만 구분해야 한다.
 
 
-def power_on(phone):
-    phone["power"] = True
-    print(f"[{phone['owner']}의 폰] 전원 ON")
+# # ────────────────────────────────────────────
+# # 방법 2. 딕셔너리 + 함수
+# # ────────────────────────────────────────────
+# def make_phone(owner, number):
+#     return {"owner": owner, "number": number, "power": False}
 
 
-def call(phone, to):
-    if not phone["power"]:
-        print(f"[{phone['owner']}의 폰] 전원이 꺼져 있어요!")
-        return
-    print(f"[{phone['owner']}의 폰] {to} 에게 전화 📞")
+# def power_on(phone):
+#     phone["power"] = True
+#     print(f"[{phone['owner']}의 폰] 전원 ON")
 
 
-print("=== 방법 2: 딕셔너리 + 함수 ===")
-chulsu = make_phone("철수", "010-1111-1111")
-power_on(chulsu)
-call(chulsu, "010-2222-2222")
+# def call(phone, to):
+#     if not phone["power"]:
+#         print(f"[{phone['owner']}의 폰] 전원이 꺼져 있어요!")
+#         return
+#     print(f"[{phone['owner']}의 폰] {to} 에게 전화 📞")
+
+
+# print("=== 방법 2: 딕셔너리 + 함수 ===")
+# chulsu = make_phone("철수", "010-1111-1111")
+# power_on(chulsu)
+# call(chulsu, "010-2222-2222")
+# call("아아ㅏ아", "010-2222-3333")
 
 # 돌아는 간다. 그런데…
 # 문제 1: 데이터(chulsu)와 동작(power_on, call)이 남남이다.
@@ -66,17 +67,24 @@ class Phone:
         self.power = True
         print(f"[{self.owner}의 폰] 전원 ON")
 
+    def power_off(self):
+        self.power = False
+        print(f"[{self.owner}의 폰] 전원 OFF")
+
     def call(self, to):
         if not self.power:
             print(f"[{self.owner}의 폰] 전원이 꺼져 있어요!")
             return
         print(f"[{self.owner}의 폰] {to} 에게 전화 📞")
 
-
 print("\n=== 방법 3: 클래스 ===")
 chulsu = Phone("철수", "010-1111-1111")
 chulsu.power_on()
 chulsu.call("010-2222-2222")
+
+bin = Phone("빈", "010-1234-1234")
+bin.power_on()
+bin.call("010-1234-1234")
 
 # 달라진 점을 잘 보세요. 출력은 방법 2와 완전히 같습니다. 구조만 바뀌었습니다.
 #   power_on(chulsu)      →  chulsu.power_on()

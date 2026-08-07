@@ -88,6 +88,7 @@ def register(phone_class):            # 클래스를 받아서
 
 print("\n=== 보통 함수 호출로 등록해 보기 ===")
 register(IPhone)                      # 숫자 넘기듯 클래스를 넘겼다
+register(GPhone)
 print("카탈로그:", REGISTRY)
 
 
@@ -115,7 +116,7 @@ class FoldPhone(Phone):               #    즉  FoldPhone = register(FoldPhone)
         print(f"[{self.owner}의 폴더폰] (접힌 채로) 웅웅- 📳")
 
 
-print("카탈로그:", REGISTRY)
+print("카탈로그1111111111111:", REGISTRY)
 
 # ★ 방금 실행 결과를 보세요: FoldPhone 을 '정의(출시)하는 순간'
 #   [카탈로그 등록] FOLD 가 찍혔습니다. 우리가 부르지 않아도,

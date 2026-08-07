@@ -20,12 +20,12 @@
 # 부품들: '벨소리'  (공통 약속 = play 메서드, Step 4 에서 배운 그것!)
 # ────────────────────────────────────────────
 class Marimba:
-    def play(self, owner):
+    def play6(self, owner):
         print(f"[{owner}의 폰] 띠리링~ 마림바 🎵")
 
 
 class Bell:
-    def play(self, owner):
+    def play777777(self, owner):
         print(f"[{owner}의 폰] 따르릉 따르릉 ☎️")
 
 

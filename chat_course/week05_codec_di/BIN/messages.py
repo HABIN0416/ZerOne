@@ -19,12 +19,12 @@ import base64
 import os
 
 # 꼬리표(tag) -> 클래스   :  if/elif 대신 '등록표(registry)'
-_REGISTRY = {}
+_REGISTRY = {} #✅팩토리가 참고하는 등록표
 
 
 def register(cls):
     """클래스를 종류 등록표에 올린다 (데코레이터)."""
-    _REGISTRY[cls.tag] = cls
+    _REGISTRY[cls.tag] = cls #✅각 클래스를 등록표에 자동 등록
     return cls
 
 
@@ -49,24 +49,24 @@ class Message:
     # 여기선 꼬리표가 '기계가 만든' 규격(TEXT|·EMOJI|)이라, if/elif 대신
     # 등록표(_REGISTRY)에서 '찾아서' 그 클래스에게 만들게 시킨다.
     #   (보내는 쪽 팩토리는 client.py 의 make_message — 사람 입력을 다뤄서 성격이 다름)
-    @staticmethod
-    def from_wire(line):
+    @staticmethod              #이 함수는 self/cls 필요 없어요" 표시 + 관련 기능끼리 클래스 안에 정리정돈
+    def from_wire(line): #✅팩토리(from_wire)가 어느 틀을 찍어낼 것인지 찾는거
         tag, rest = line.split("|", 1)     # "TEXT|철수|안녕" -> tag="TEXT", rest="철수|안녕"
-        cls = _REGISTRY.get(tag)           # 꼬리표로 '어느 클래스인지' 등록표에서 찾기
+        cls = _REGISTRY.get(tag)           # ✅꼬리표로 '어느 클래스인지' 등록표에서 찾기
         if cls is None:                    # 등록표에 없는 종류면 (대비책)
             return UnknownMessage(line)
-        return cls.parse(rest)             # 찾은 클래스에게 "네가 만들어" (아래 parse)
+        return cls.parse(rest)             # ✅찾은 클래스에게 "네가 만들어" (아래 parse)
 
-    @classmethod
-    def parse(cls, rest):
+    @classmethod       #클래스 자기 자신(cls)**을 첫 번째로 받아서, "이 클래스로 뭔가를 만들거나 클래스 정보를 쓰는" 함수
+    def parse(cls, rest):   #✅팥붕어빵 굽기
         """[팩토리 메서드] 꼬리표 뒤(rest)를 받아 그 종류의 객체로. 종류마다 구현.
         from_wire 가 '어느 클래스인지'를 고르면, 실제 재료 손질·생성은 각 parse 가 맡는다."""
         raise NotImplementedError
 
 
-@register
+@register #✅등록해줘 스티커
 class TextMessage(Message):
-    tag = "TEXT"
+    tag = "TEXT" #✅등록판에 올라갈 이름표
     kind = "텍스트"
 
     def __init__(self, text, sender=""):
@@ -80,7 +80,7 @@ class TextMessage(Message):
         return f"{self.sender}: {self.text}"
 
     @classmethod
-    def parse(cls, rest):
+    def parse(cls, rest): #✅텍스트메세지 전용 굽기
         sender, text = rest.split("|", 1)
         return cls(text, sender)
 
@@ -189,17 +189,17 @@ class UnknownMessage(Message):
 # [실습/과제 힌트] 위치 공유를 추가해 보세요.
 # 아래 클래스 하나만 추가하면 끝납니다. 서버도 클라이언트도 안 고칩니다!
 #
-# @register
-# class LocationMessage(Message):
-#     tag = "LOC"; kind = "위치"
-#     def __init__(self, lat, lon, sender=""):
-#         super().__init__(sender); self.lat = lat; self.lon = lon
-#     def to_wire(self):
-#         return f"LOC|{self.sender}|{self.lat}|{self.lon}"
-#     def display(self):
-#         return f"{self.sender}: 📍 위치 ({self.lat}, {self.lon})"
-#     @classmethod
-#     def parse(cls, rest):
-#         sender, lat, lon = rest.split("|", 2)
-#         return cls(lat, lon, sender)
+@register
+class LocationMessage(Message):
+    tag = "LOC"; kind = "위치"
+    def __init__(self, lat, lon, sender=""):
+        super().__init__(sender); self.lat = lat; self.lon = lon
+    def to_wire(self):
+        return f"LOC|{self.sender}|{self.lat}|{self.lon}"
+    def display(self):
+        return f"{self.sender}: 📍 위치 ({self.lat}, {self.lon})"
+    @classmethod
+    def parse(cls, rest):
+        sender, lat, lon = rest.split("|", 2)
+        return cls(lat, lon, sender)
 # ------------------------------------------------------------
