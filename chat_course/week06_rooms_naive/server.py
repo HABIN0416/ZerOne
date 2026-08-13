@@ -139,7 +139,10 @@ def handle(conn, addr):
             line = reader.readline()
             if not line:
                 break
-            msg = CODEC.decode(line.rstrip("\n"))
+            try:
+                msg = CODEC.decode(line.rstrip("\n"))   # 해독 (다른 키·손상된 줄이면 예외)
+            except Exception:
+                continue                                # 해독 실패한 줄은 무시, 연결은 유지
 
             # 엉성: 텍스트이면서 '/'로 시작하면 명령으로 가로챈다
             if isinstance(msg, TextMessage) and msg.text.startswith("/"):

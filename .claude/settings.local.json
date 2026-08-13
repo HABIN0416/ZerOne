@@ -6,7 +6,11 @@
       "Bash(python3 make_ppt.py)",
       "Bash(python3 step07_di.py)",
       "Bash(python3 -)",
-      "Bash(rm -rf __pycache__ ../__pycache__)"
+      "Bash(rm -rf __pycache__ ../__pycache__)",
+      "Bash(sed 's/PlainCodec/AesGcmCodec/g' wk8.py)",
+      "Bash(timeout 40 python3 -u wk8aes.py)",
+      "Bash(python3 run_sql.py 01_crud.sql)",
+      "Bash(python3 run_sql.py 02_join.sql)"
     ]
   }
 }
