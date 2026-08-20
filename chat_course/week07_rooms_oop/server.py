@@ -24,7 +24,7 @@ CODEC = AesGcmCodec()   # AES-256-GCM (6주차부터 평문 제거). 클라이�
 
 # ── 조립(Composition Root): 저장소를 골라 '주입' ──
 #   FileRoomRepository("rooms.json") 로 바꾸면 재시작해도 방이 남는다.
-REPO = InMemoryRoomRepository()
+REPO = FileRoomRepository()
 
 # 접속별 가벼운 정보 (8주차에 Session 객체로 정리 예정)
 nickname_of = {}        # conn -> nickname
